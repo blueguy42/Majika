@@ -6,18 +6,38 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import com.example.majika.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding : ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        replaceFragment(Twibbon())
 
-        val rollButton: Button = findViewById(R.id.roll_button)
-        rollButton.setOnClickListener { rollDice() }
+        binding.bottomNavigationView.setOnItemSelectedListener {
+
+            when(it.itemId){
+                R.id.camera -> replaceFragment(Twibbon())
+                R.id.location -> replaceFragment(CabangRestoran())
+                R.id.food -> replaceFragment(Menu())
+                R.id.cart -> replaceFragment(Keranjang())
+                else ->{
+                }
+            }
+            true
+        }
     }
 
-    private fun rollDice() {
-        Toast.makeText(this, "button clicked",
-            Toast.LENGTH_SHORT).show()
+    private fun replaceFragment(fragment : Fragment){
+
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.frame_layout,fragment)
+        fragmentTransaction.commit()
     }
 }

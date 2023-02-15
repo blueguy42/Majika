@@ -15,7 +15,7 @@ class MenuAdapter(private val menuList: ArrayList<MenuModel>) :
         val harga : TextView = itemView.findViewById(R.id.harga_makanan)
         val terjual : TextView = itemView.findViewById(R.id.banyak_terjual)
         val deskripsi : TextView = itemView.findViewById(R.id.deskripsi_makanan)
-        val quantity : TextView = itemView.findViewById(R.id.quantitas_menu)
+        var quantity : TextView = itemView.findViewById(R.id.quantitas_menu)
         val add : Button = itemView.findViewById(R.id.add_menu)
         val dec : Button = itemView.findViewById(R.id.decrease_menu)
     }
@@ -38,12 +38,12 @@ class MenuAdapter(private val menuList: ArrayList<MenuModel>) :
         holder.quantity.text = currentItem.quantity.toString()
 
         holder.add.setOnClickListener {
-            holder.quantity.text = (currentItem.quantity + 1).toString()
+            holder.quantity.text = (holder.quantity.text.toString().toInt() + 1).toString()
         }
 
         holder.dec.setOnClickListener{
-            if (currentItem.quantity > 0) {
-                holder.quantity.text = (currentItem.quantity - 1).toString()
+            if (holder.quantity.text.toString().toInt() > 0) {
+                holder.quantity.text = (holder.quantity.text.toString().toInt() - 1).toString()
             }
         }
     }

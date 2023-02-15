@@ -7,4 +7,38 @@
     <string name="title_notifications">Notifications</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- DEFAULT UNTUK RECYCLEVIEW MENU MAKANAN -->
+    <string name="default_nama">Makanan A</string>
+    <string name="default_harga">Rp 50.000</string>
+    <string name="default_terjual">10Rb+ Terjual</string>
+    <string name="default_deskripsi">Pedas</string>
+
+    <string-array name="nama_makanan">
+        <item>Makanan A</item>
+        <item>Makanan B</item>
+        <item>Makanan C</item>
+        <item>Makanan D</item>
+    </string-array>
+
+    <string-array name="harga_makanan">
+        <item>Rp 50.000</item>
+        <item>Rp 100.000</item>
+        <item>Rp 70.000</item>
+        <item>Rp 40.000</item>
+    </string-array>
+
+    <string-array name="terjual_makanan">
+        <item>10RB+ Terjual</item>
+        <item>20RB+ Terjual</item>
+        <item>30RB+ Terjual</item>
+        <item>40RB+ Terjual</item>
+    </string-array>
+
+    <string-array name="deskripsi_makanan">
+        <item>Enak</item>
+        <item>Pedes</item>
+        <item>20000</item>
+        <item>30000</item>
+    </string-array>
 </resources>

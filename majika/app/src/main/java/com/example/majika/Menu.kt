@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -18,14 +20,29 @@ private const val ARG_PARAM2 = "param2"
  */
 class Menu : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    lateinit var recyclerView: RecyclerView
+    lateinit var modelList: ArrayList<MenuModel>
+    lateinit var adapter: MenuAdapter
+
+    lateinit var nama: Array<String>
+    lateinit var harga: Array<String>
+    lateinit var terjual: Array<String>
+    lateinit var deskripsi: Array<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    }
+
+    private fun setupData(){
+        nama = resources.getStringArray(R.array.nama_makanan)
+        harga = resources.getStringArray(R.array.harga_makanan)
+        terjual = resources.getStringArray(R.array.terjual_makanan)
+        deskripsi = resources.getStringArray(R.array.deskripsi_makanan)
+
+        modelList = arrayListOf<MenuModel>()
+        for (i in nama.indices){
+            val temp = MenuModel(nama[i],harga[i],terjual[i],deskripsi[i])
+            modelList.add(temp)
         }
     }
 
@@ -35,6 +52,17 @@ class Menu : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_menu, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?){
+        super.onViewCreated(view, savedInstanceState)
+        setupData()
+        val layoutManager = LinearLayoutManager(context)
+        recyclerView = view.findViewById(R.id.Daftar_Makanan)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.setHasFixedSize(true)
+        adapter = MenuAdapter(modelList)
+        recyclerView.adapter = adapter
     }
 
     companion object {

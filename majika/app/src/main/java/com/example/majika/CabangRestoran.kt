@@ -5,6 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.majika.retrofit.RetrofitHelper
+import com.example.majika.retrofit.endpoint.Branch
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import android.util.Log
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,6 +31,15 @@ class CabangRestoran : Fragment() {
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+        }
+
+        val branchAPI = RetrofitHelper.getInstance().create(Branch::class.java)
+        GlobalScope.launch {
+            val branchObj = branchAPI.getBranch()
+            if (branchObj != null) {
+                // Checking the results
+                Log.d("RESULT: ", branchObj.body().toString())
+            }
         }
     }
 

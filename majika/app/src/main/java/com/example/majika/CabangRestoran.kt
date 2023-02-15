@@ -35,10 +35,10 @@ class CabangRestoran : Fragment() {
 
         val branchAPI = RetrofitHelper.getInstance().create(Branch::class.java)
         GlobalScope.launch {
-            val branchObj = branchAPI.getBranch()
-            if (branchObj != null) {
+            val branchData = branchAPI.getBranch()
+            if (branchData != null) {
                 // Checking the results
-                Log.d("RESULT: ", branchObj.body().toString())
+                Log.d("GetData", branchData.body().toString())
             }
         }
     }

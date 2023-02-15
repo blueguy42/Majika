@@ -2,7 +2,7 @@ package com.example.majika.retrofit.data
 
 import com.google.gson.annotations.SerializedName
 
-data class ListBranch (
-    @SerializedName("data") val data: List<Branch>?,
+data class DataListBranch (
+    @SerializedName("data") val data: List<DataBranch>?,
     @SerializedName("size") val size: Int?
 )

@@ -2,7 +2,7 @@ package com.example.majika.retrofit.data
 
 import com.google.gson.annotations.SerializedName
 
-data class Menu (
+data class DataMenu (
     @SerializedName("name") val name: String?,
     @SerializedName("description") val description: String?,
     @SerializedName("currency") val currency: String?,

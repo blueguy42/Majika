@@ -2,6 +2,6 @@ package com.example.majika.retrofit.data
 
 import com.google.gson.annotations.SerializedName
 
-data class Payment (
+data class DataPayment (
     @SerializedName("status") val status: String?
 )

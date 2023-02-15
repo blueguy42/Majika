@@ -1,6 +1,7 @@
 package com.example.majika
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,10 @@ import com.budiyev.android.codescanner.CodeScannerView
 import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ErrorCallback
 import com.budiyev.android.codescanner.ScanMode
+import com.example.majika.retrofit.RetrofitHelper
+import com.example.majika.retrofit.endpoint.EndpointPayment
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class Pembayaran : AppCompatActivity() {
@@ -37,6 +42,15 @@ class Pembayaran : AppCompatActivity() {
 
                 val textView: TextView = findViewById(R.id.scan_result) as TextView
                 textView.text = it.text
+
+                val endpointPaymentAPI = RetrofitHelper.getInstance().create(EndpointPayment::class.java)
+                GlobalScope.launch {
+                    val paymentResponse = endpointPaymentAPI.postPayment(it.text)
+                    if (paymentResponse != null) {
+                        // Checking the results
+                        Log.d("PostData", paymentResponse.body().toString())
+                    }
+                }
 
             }
         }

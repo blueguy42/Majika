@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.majika.retrofit.RetrofitHelper
-import com.example.majika.retrofit.endpoint.Branch
+import com.example.majika.retrofit.endpoint.EndpointBranch
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import android.util.Log
@@ -32,15 +32,6 @@ class CabangRestoran : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-
-        val branchAPI = RetrofitHelper.getInstance().create(Branch::class.java)
-        GlobalScope.launch {
-            val branchData = branchAPI.getBranch()
-            if (branchData != null) {
-                // Checking the results
-                Log.d("GetData", branchData.body().toString())
-            }
-        }
     }
 
     override fun onCreateView(
@@ -49,6 +40,18 @@ class CabangRestoran : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_cabang_restoran, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?){
+        super.onViewCreated(view, savedInstanceState)
+        val endpointBranchAPI = RetrofitHelper.getInstance().create(EndpointBranch::class.java)
+        GlobalScope.launch {
+            val branchData = endpointBranchAPI.getBranch()
+            if (branchData != null) {
+                // Checking the results
+                Log.d("GetData", branchData.body().toString())
+            }
+        }
     }
 
     companion object {

@@ -3,6 +3,7 @@ package com.example.majika
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -14,6 +15,9 @@ class MenuAdapter(private val menuList: ArrayList<MenuModel>) :
         val harga : TextView = itemView.findViewById(R.id.harga_makanan)
         val terjual : TextView = itemView.findViewById(R.id.banyak_terjual)
         val deskripsi : TextView = itemView.findViewById(R.id.deskripsi_makanan)
+        val quantity : TextView = itemView.findViewById(R.id.quantitas_menu)
+        val add : Button = itemView.findViewById(R.id.add_menu)
+        val dec : Button = itemView.findViewById(R.id.decrease_menu)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
@@ -31,7 +35,17 @@ class MenuAdapter(private val menuList: ArrayList<MenuModel>) :
         holder.harga.text = currentItem.harga
         holder.terjual.text = currentItem.terjual
         holder.deskripsi.text = currentItem.deskripsi
+        holder.quantity.text = currentItem.quantity.toString()
 
+        holder.add.setOnClickListener {
+            holder.quantity.text = (currentItem.quantity + 1).toString()
+        }
+
+        holder.dec.setOnClickListener{
+            if (currentItem.quantity > 0) {
+                holder.quantity.text = (currentItem.quantity - 1).toString()
+            }
+        }
     }
 
 

@@ -99,7 +99,8 @@ class Menu : Fragment() {
                     val price = i.currency + ". " + i.price.toString()
                     val sold = "Terjual " + i.sold.toString()
                     val desc = i.description
-                    modelList.add(MenuModel(name,price,sold,desc))
+                    val quantity = 0
+                    modelList.add(MenuModel(name,price,sold,desc,0))
                 }
                 tempModelList.addAll(modelList)
             }

@@ -64,6 +64,45 @@
                 android:textColor="#FFFFFF"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/banyak_terjual" />
+
+            <Button
+                android:id="@+id/add_menu"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="44dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="#E19C9C"
+                android:text="+"
+                android:textColor="#6A0404"
+                android:textSize="15sp"
+                app:iconSize="10sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/quantitas_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="58dp"
+                android:layout_marginEnd="9dp"
+                android:text="0"
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toStartOf="@+id/add_menu"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/decrease_menu"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="44dp"
+                android:layout_marginEnd="12dp"
+                android:backgroundTint="#E19C9C"
+                android:text="-"
+                android:textColor="#6A0404"
+                android:textSize="15sp"
+                app:iconSize="10sp"
+                app:layout_constraintEnd_toStartOf="@+id/quantitas_menu"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

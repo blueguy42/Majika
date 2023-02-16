@@ -10,6 +10,11 @@ import com.example.majika.retrofit.endpoint.EndpointBranch
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import android.util.Log
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,16 +27,12 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class CabangRestoran : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    lateinit var recyclerView: RecyclerView
+    lateinit var cabangResoranList: ArrayList<CabangRestoranModel>
+    lateinit var adapter: CabangRestoranAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -44,15 +45,42 @@ class CabangRestoran : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?){
         super.onViewCreated(view, savedInstanceState)
-        val endpointBranchAPI = RetrofitHelper.getInstance().create(EndpointBranch::class.java)
-        GlobalScope.launch {
-            val branchData = endpointBranchAPI.getBranch()
-            if (branchData != null) {
-                // Checking the results
-                Log.d("GetData", branchData.body().toString())
+        cabangResoranList = arrayListOf<CabangRestoranModel>()
+        val cabangAPI = RetrofitHelper.getInstance().create(EndpointBranch::class.java)
+        lifecycleScope.launch {
+            val operation = GlobalScope.async(Dispatchers.Default) {
+                val cabangData = cabangAPI.getBranch()
+                if (cabangData != null) {
+                    // Checking the result
+                    Log.d("GetData", cabangData.body().toString())
+                    val dataCabang = cabangData!!.body()!!.data
+                    for (i in dataCabang){
+                        val name = i.name
+                        val popular_food = i.popular_food
+                        val address = i.address
+                        val contact_person = i.contact_person
+                        val phone_number = i.phone_number
+                        val longitude = i.longitude
+                        val latitude = i.latitude
+                        cabangResoranList.add(CabangRestoranModel(name, popular_food, address, contact_person, phone_number, longitude, latitude))
+                    }
+                }
             }
+            operation.await()
+            val layoutManager = LinearLayoutManager(context)
+            recyclerView = view.findViewById(R.id.Daftar_CabangRestoran)
+            recyclerView.layoutManager = layoutManager
+            recyclerView.setHasFixedSize(true)
+            adapter = CabangRestoranAdapter(cabangResoranList)
+            recyclerView.adapter = adapter
         }
     }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+
+    }
+
 
     companion object {
         /**

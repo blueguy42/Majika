@@ -53,4 +53,12 @@
         <item>mengenyangkan</item>
         <item>membaperkan</item>
     </string-array>
+
+     <!-- DEFAULT UNTUK RECYCLEVIEW CABANG RESTORAN -->
+    <string name="default_name_branch">Cabang 1</string>
+    <string name="default_popular_food">Makanan A</string>
+    <string name="default_address">Jl. A</string>
+    <string name="default_contact_person">Afan</string>
+    <string name="default_phone_number">08123456789</string>
+
 </resources>

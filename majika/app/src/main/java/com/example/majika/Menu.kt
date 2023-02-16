@@ -70,7 +70,7 @@ class Menu : Fragment() {
                         if (modelList2[i].nama.lowercase(Locale.getDefault()).contains(searchText)){
                             tempModelList2.add(modelList2[i])
                         }
-                        recyclerView.adapter!!.notifyDataSetChanged()
+                        recyclerView2.adapter!!.notifyDataSetChanged()
                     }
                 }else{
                     tempModelList.clear()

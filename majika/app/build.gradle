@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.majika'
+    namespace 'com.sla.majika'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.majika"
+        applicationId "com.sla.majika"
         minSdk 29
         targetSdk 33
         versionCode 1

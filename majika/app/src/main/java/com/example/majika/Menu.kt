@@ -32,9 +32,13 @@ private const val ARG_PARAM2 = "param2"
 class Menu : Fragment() {
     // TODO: Rename and change types of parameters
     lateinit var recyclerView: RecyclerView
+    lateinit var recyclerView2: RecyclerView
     lateinit var modelList: ArrayList<MenuModel>
     lateinit var tempModelList: ArrayList<MenuModel>
+    lateinit var modelList2: ArrayList<MenuModel>
+    lateinit var tempModelList2: ArrayList<MenuModel>
     lateinit var adapter: MenuAdapter
+    lateinit var adapter2: MenuAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +56,8 @@ class Menu : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 tempModelList.clear()
+                tempModelList2.clear()
+
                 val searchText = newText!!.lowercase(Locale.getDefault())
                 if (searchText.isNotEmpty()){
                     for (i in modelList.indices){
@@ -60,10 +66,19 @@ class Menu : Fragment() {
                         }
                         recyclerView.adapter!!.notifyDataSetChanged()
                     }
+                    for (i in modelList2.indices){
+                        if (modelList2[i].nama.lowercase(Locale.getDefault()).contains(searchText)){
+                            tempModelList2.add(modelList2[i])
+                        }
+                        recyclerView.adapter!!.notifyDataSetChanged()
+                    }
                 }else{
                     tempModelList.clear()
                     tempModelList.addAll(modelList)
+                    tempModelList2.clear()
+                    tempModelList2.addAll(modelList2)
                     recyclerView.adapter!!.notifyDataSetChanged()
+                    recyclerView2.adapter!!.notifyDataSetChanged()
                 }
                 return false
             }
@@ -86,14 +101,18 @@ class Menu : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         modelList = arrayListOf<MenuModel>()
         tempModelList = arrayListOf<MenuModel>()
-        val menuAPI = RetrofitHelper.getInstance().create(EndpointMenu::class.java)
+        modelList2 = arrayListOf<MenuModel>()
+        tempModelList2 = arrayListOf<MenuModel>()
+
+        val menuDrinkAPI = RetrofitHelper.getInstance().create(EndpointMenuDrink::class.java)
+        val menuFoodAPI = RetrofitHelper.getInstance().create(EndpointMenuFood::class.java)
         lifecycleScope.launch {
         val operation = GlobalScope.async(Dispatchers.Default) {
-            val menuData = menuAPI.getMenu()
-            if (menuData != null) {
+            val menuFoodData = menuFoodAPI.getMenuFood()
+            if (menuFoodData != null) {
                 // Checking the result
-                Log.d("GetData", menuData.body().toString())
-                val datamakanan = menuData!!.body()!!.data
+                Log.d("GetData", menuFoodData.body().toString())
+                val datamakanan = menuFoodData!!.body()!!.data
                 for (i in datamakanan){
                     val name = i.name
                     val price = i.currency + ". " + i.price.toString()
@@ -104,14 +123,42 @@ class Menu : Fragment() {
                 }
                 tempModelList.addAll(modelList)
             }
+
+            val menuDrinkData = menuDrinkAPI.getMenuDrink()
+            if (menuDrinkData != null) {
+                // Checking the result
+                Log.d("GetData", menuDrinkData.body().toString())
+                val dataminuman = menuDrinkData!!.body()!!.data
+                for (i in dataminuman){
+                    val name = i.name
+                    val price = i.currency + ". " + i.price.toString()
+                    val sold = "Terjual " + i.sold.toString()
+                    val desc = i.description
+                    val quantity = 0
+                    modelList2.add(MenuModel(name,price,sold,desc,0))
+                }
+                tempModelList2.addAll(modelList2)
+            }
         }
             operation.await()
+
             val layoutManager = LinearLayoutManager(context)
             recyclerView = view.findViewById(R.id.Daftar_Makanan)
             recyclerView.layoutManager = layoutManager
             recyclerView.setHasFixedSize(true)
             adapter = MenuAdapter(tempModelList)
             recyclerView.adapter = adapter
+
+            val layoutManager2 = LinearLayoutManager(context)
+            recyclerView2 = view.findViewById(R.id.Daftar_Minuman)
+            recyclerView2.layoutManager = layoutManager2
+            recyclerView2.setHasFixedSize(true)
+            adapter2 = MenuAdapter(tempModelList2)
+            recyclerView2.adapter = adapter2
+
+            recyclerView.setNestedScrollingEnabled(false);
+            recyclerView2.setNestedScrollingEnabled(false);
+
         }
     }
 

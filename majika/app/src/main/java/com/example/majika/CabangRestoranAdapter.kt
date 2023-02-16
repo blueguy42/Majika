@@ -1,9 +1,14 @@
 package com.example.majika
 
+import android.content.Intent
+import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 
 class CabangRestoranAdapter(private val cabangList: ArrayList<CabangRestoranModel>) :
@@ -15,8 +20,7 @@ class CabangRestoranAdapter(private val cabangList: ArrayList<CabangRestoranMode
         val address: TextView = itemView.findViewById(R.id.address_branch)
         // val contact_person : TextView = itemView.findViewById(R.id.contact_person_branch)
         val phoneNumber : TextView = itemView.findViewById(R.id.phone_number_branch)
-        // val longitude : TextView = itemView.findViewById(R.id.longitude_branch)
-        // val latitude : TextView = itemView.findViewById(R.id.latitude_branch)
+        val buttonMaps : Button = itemView.findViewById(R.id.button_maps)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CabangRestoranViewHolder {
@@ -35,8 +39,12 @@ class CabangRestoranAdapter(private val cabangList: ArrayList<CabangRestoranMode
         holder.address.text = currentItem.address
 //        holder.contact_person.text = currentItem.contact_person
         holder.phoneNumber.text = currentItem.phone_number
-//        holder.longitude.text = currentItem.longitude
-//        holder.latitude.text = currentItem.latitude
+        holder.buttonMaps.setOnClickListener {
+            val gmmIntentUri = Uri.parse(String.format("geo:%s,%s", currentItem.latitude, currentItem.longitude))
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            startActivity(holder.itemView.context, mapIntent, null)
+        }
     }
 
 

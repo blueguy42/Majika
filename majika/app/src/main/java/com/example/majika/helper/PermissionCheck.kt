@@ -10,14 +10,14 @@ object PermissionCheck {
     private const val TAG = "PermissionRequest"
     private const val RECORD_REQUEST_CODE = 101
 
-    fun setupPermission(activity: AppCompatActivity, permission: String) {
-        // set up permission
+    fun getRequestCode(): Int {return RECORD_REQUEST_CODE}
+    fun isPermissionGranted(activity: AppCompatActivity, permission: String): Boolean {
         val permissionBool = ContextCompat.checkSelfPermission(activity, permission)
+        return permissionBool == PackageManager.PERMISSION_GRANTED
+    }
 
-        if (permissionBool != PackageManager.PERMISSION_GRANTED) {
-            Log.i(TAG, "Permission $permission denied")
-            ActivityCompat.requestPermissions(activity, arrayOf(permission), RECORD_REQUEST_CODE)
-        }
+    fun requestPermission(activity: AppCompatActivity, permission: String) {
+        ActivityCompat.requestPermissions(activity, arrayOf(permission), RECORD_REQUEST_CODE)
     }
 
     fun handlePermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {

@@ -14,6 +14,9 @@
     <string name="default_terjual">10Rb+ Terjual</string>
     <string name="default_deskripsi">Pedas</string>
 
+    <string name="btn_capture">Capture</string>
+    <string name="twibbon_warning_no_permissions">Camera permission is required to use this feature</string>
+
     <string-array name="nama_makanan">
         <item>Ayam Crisbar</item>
         <item>Nasgor Jawa</item>

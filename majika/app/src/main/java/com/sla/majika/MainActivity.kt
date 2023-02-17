@@ -4,6 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.sla.majika.databinding.ActivityMainBinding
+import com.sla.majika.room.CartItemRepository
+import com.sla.majika.room.CartItemRoomDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 
 class MainActivity : AppCompatActivity() {
 

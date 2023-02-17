@@ -6,14 +6,13 @@
     tools:context=".Keranjang">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Keranjang Fragment"
-        android:textSize="26dp"/>
 
     <!-- CONTOH BUTTON BUAT KE PEMBAYARAN   -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/Daftar_Cart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <Button
         android:id="@+id/buttonPembayaran"
         android:layout_width="wrap_content"

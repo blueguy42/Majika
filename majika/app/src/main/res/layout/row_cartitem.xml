@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        app:cardBackgroundColor="#8A0E0E"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:paddingVertical="5dp">
+
+            <TextView
+                android:id="@+id/nama_cart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="2dp"
+                android:text="@string/default_nama"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/harga_cart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/default_harga"
+                android:textColor="#FFFFFF"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nama_cart" />
+
+            <Button
+                android:id="@+id/add_menu"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="#E19C9C"
+                android:text="+"
+                android:textColor="#6A0404"
+                android:textSize="15sp"
+                app:iconSize="10sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/quantitas_cart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                android:layout_marginEnd="12dp"
+                android:text="0"
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toStartOf="@+id/add_menu"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/decrease_menu"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="64dp"
+                android:layout_marginEnd="12dp"
+                android:backgroundTint="#E19C9C"
+                android:text="-"
+                android:textColor="#6A0404"
+                android:textSize="15sp"
+                app:iconSize="10sp"
+                app:layout_constraintEnd_toStartOf="@+id/quantitas_cart"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/jumlah"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="21dp"
+                android:text="Jumlah"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

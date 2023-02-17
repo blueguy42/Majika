@@ -38,12 +38,14 @@ class MenuAdapter(private val menuList: ArrayList<MenuModel>) :
         holder.quantity.text = currentItem.quantity.toString()
 
         holder.add.setOnClickListener {
-            holder.quantity.text = (holder.quantity.text.toString().toInt() + 1).toString()
+            menuList[position].quantity = menuList[position].quantity + 1
+            notifyDataSetChanged()
         }
 
         holder.dec.setOnClickListener{
-            if (holder.quantity.text.toString().toInt() > 0) {
-                holder.quantity.text = (holder.quantity.text.toString().toInt() - 1).toString()
+            if (menuList[position].quantity.toInt() > 0) {
+                menuList[position].quantity = menuList[position].quantity - 1
+                notifyDataSetChanged()
             }
         }
     }

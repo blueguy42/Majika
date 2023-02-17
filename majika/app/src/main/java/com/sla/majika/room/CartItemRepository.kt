@@ -1,22 +1,30 @@
 package com.sla.majika.room
 
 import androidx.annotation.WorkerThread
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
 // Declares the DAO as a private property in the constructor. Pass in the DAO
 // instead of the whole database, because you only need access to the DAO
-class CartItemRepository(private val cartItemDao: CartItemDAO) {
+class CartItemRepository(private val dao: CartItemDAO) {
 
-    // Room executes all queries on a separate thread.
-    // Observed Flow will notify the observer when the data has changed.
-    val allCartItems: Flow<List<CartItem>> = cartItemDao.getItems()
+    fun get(): List<CartItem>{
+        return dao.get();
+    }
 
-    // By default Room runs suspend queries off the main thread, therefore, we don't need to
-    // implement anything else to ensure we're not doing long running database work
-    // off the main thread.
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun insert(cartItem: CartItem) {
-        cartItemDao.insert(cartItem)
+    fun getByNama(nama:String): CartItem{
+        return dao.getByNama(nama)
+    }
+
+    fun insert(cartItem: CartItem){
+        dao.insert(cartItem)
+    }
+
+    fun delete(cartItem: CartItem){
+        dao.delete(cartItem)
+    }
+
+    fun update(cartItem: CartItem){
+        dao.update(cartItem)
     }
 }

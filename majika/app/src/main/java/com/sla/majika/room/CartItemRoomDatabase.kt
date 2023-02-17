@@ -1,13 +1,9 @@
 package com.sla.majika.room
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider.NewInstanceFactory.Companion.instance
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteDatabase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 // Annotates class to be a Room Database with a table (entity) of the Word class
 @Database(entities = [CartItem::class], version = 1)
@@ -19,20 +15,21 @@ public abstract class CartItemRoomDatabase : RoomDatabase() {
         // Singleton prevents multiple instances of database opening at the
         // same time.
         @Volatile
-        private var instance: CartItemRoomDatabase? = null
-        private val LOCK = Any()
+        private var INSTANCE: CartItemRoomDatabase? = null
 
-        operator fun invoke(context: Context) = instance ?: synchronized(LOCK){
-            instance ?: buildDatabase(context).also{
-                instance = it
+        fun getDatabase(context: Context): CartItemRoomDatabase {
+            // if the INSTANCE is not null, then return it,
+            // if it is, then create the database
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    CartItemRoomDatabase::class.java,
+                    "word_database"
+                ).build()
+                INSTANCE = instance
+                // return instance
+                instance
             }
         }
-
-        private fun buildDatabase(context: Context) = Room.databaseBuilder(
-            context.applicationContext,
-            CartItemRoomDatabase::class.java,
-            "cartitems.db"
-        ).build()
-
     }
 }

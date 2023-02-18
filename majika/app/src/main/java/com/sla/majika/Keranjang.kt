@@ -51,12 +51,8 @@ class Keranjang : Fragment(), CartItemClickListener {
         val view = inflater.inflate(R.layout.fragment_keranjang, container, false)
         val btnPembayaran = view.findViewById<Button>(R.id.buttonPembayaran)
         btnPembayaran.setOnClickListener {
-//            val intent = Intent(activity, Pembayaran::class.java)
-//            startActivity(intent)
-            lifecycleScope.launch { // coroutine on Main
-                add(CartItem("1",2,3))
-            }
-
+            val intent = Intent(activity, Pembayaran::class.java)
+            startActivity(intent)
         }
         return view
     }
@@ -66,8 +62,12 @@ class Keranjang : Fragment(), CartItemClickListener {
 
     }
 
-    override fun remove(cartItem: CartItem){
+    override fun delete(cartItem: CartItem){
         cartItemViewModel.delete(cartItem)
+    }
+
+    override fun update(cartItem: CartItem){
+        cartItemViewModel.update(cartItem)
     }
 
     fun deleteAll(){

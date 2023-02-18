@@ -5,5 +5,6 @@ import com.sla.majika.room.CartItem
 interface CartItemClickListener
 {
     fun add(item: CartItem)
-    fun remove(item: CartItem)
+    fun delete(item: CartItem)
+    fun update(item: CartItem)
 }

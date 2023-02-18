@@ -6,11 +6,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.sla.majika.room.CartItem
 
-class MenuAdapter(private val menuList: ArrayList<MenuModel>) :
+class MenuAdapter(private val menuList: ArrayList<MenuModel>, val clickListener : CartItemClickListener) :
     RecyclerView.Adapter<MenuAdapter.MenuViewHolder>() {
 
-    class MenuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    class MenuViewHolder(itemView: View, clickListener: CartItemClickListener) : RecyclerView.ViewHolder(itemView){
         val nama : TextView = itemView.findViewById(R.id.nama_makanan)
         val harga : TextView = itemView.findViewById(R.id.harga_makanan)
         val terjual : TextView = itemView.findViewById(R.id.banyak_terjual)
@@ -18,11 +19,12 @@ class MenuAdapter(private val menuList: ArrayList<MenuModel>) :
         var quantity : TextView = itemView.findViewById(R.id.quantitas_menu)
         val add : Button = itemView.findViewById(R.id.add_menu)
         val dec : Button = itemView.findViewById(R.id.decrease_menu)
+        val clickListener = clickListener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.row_menu, parent, false)
-        return MenuViewHolder(itemView)
+        return MenuViewHolder(itemView, clickListener)
     }
 
     override fun getItemCount(): Int {
@@ -32,18 +34,29 @@ class MenuAdapter(private val menuList: ArrayList<MenuModel>) :
     override fun onBindViewHolder(holder: MenuViewHolder, position: Int) {
         val currentItem = menuList[position]
         holder.nama.text = currentItem.nama
-        holder.harga.text = currentItem.harga
+        holder.harga.text = currentItem.currency + ". " + currentItem.harga
         holder.terjual.text = currentItem.terjual
         holder.deskripsi.text = currentItem.deskripsi
         holder.quantity.text = currentItem.quantity.toString()
 
         holder.add.setOnClickListener {
+            if (currentItem.quantity == 0){
+                holder.clickListener.add(CartItem(currentItem.nama,currentItem.harga.toInt(),1))
+            }
+            else {
+                holder.clickListener.update(CartItem(currentItem.nama,currentItem.harga.toInt(),currentItem.quantity + 1))
+            }
             menuList[position].quantity = menuList[position].quantity + 1
             notifyDataSetChanged()
         }
 
         holder.dec.setOnClickListener{
-            if (menuList[position].quantity.toInt() > 0) {
+            if (menuList[position].quantity == 1) {
+                holder.clickListener.add(CartItem(currentItem.nama,currentItem.harga.toInt(),1))
+                menuList[position].quantity = menuList[position].quantity - 1
+                notifyDataSetChanged()
+            } else if (menuList[position].quantity > 1){
+                holder.clickListener.update(CartItem(currentItem.nama,currentItem.harga.toInt(),currentItem.quantity - 1))
                 menuList[position].quantity = menuList[position].quantity - 1
                 notifyDataSetChanged()
             }

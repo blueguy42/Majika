@@ -8,12 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.sla.majika.databinding.ActivityMainBinding
 import com.sla.majika.retrofit.RetrofitHelper
 import com.sla.majika.retrofit.endpoint.EndpointMenuDrink
 import com.sla.majika.retrofit.endpoint.EndpointMenuFood
+import com.sla.majika.room.CartItem
+import com.sla.majika.room.CartItemViewModel
+import com.sla.majika.room.CartItemViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -30,8 +35,9 @@ private const val ARG_PARAM2 = "param2"
  * Use the [Menu.newInstance] factory method to
  * create an instance of this fragment.
  */
-class Menu : Fragment() {
+class Menu : Fragment(), CartItemClickListener {
     // TODO: Rename and change types of parameters
+    private lateinit var binding: ActivityMainBinding
     lateinit var recyclerView: RecyclerView
     lateinit var recyclerView2: RecyclerView
     lateinit var modelList: ArrayList<MenuModel>
@@ -40,10 +46,13 @@ class Menu : Fragment() {
     lateinit var tempModelList2: ArrayList<MenuModel>
     lateinit var adapter: MenuAdapter
     lateinit var adapter2: MenuAdapter
+    private val cartItemViewModel: CartItemViewModel by viewModels {
+        CartItemViewModelFactory((activity?.application as MajikaApp).repository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        binding = ActivityMainBinding.inflate(layoutInflater)
     }
 
     override fun onCreateOptionsMenu(menu: android.view.Menu, inflater: MenuInflater) {
@@ -104,6 +113,7 @@ class Menu : Fragment() {
         tempModelList = arrayListOf<MenuModel>()
         modelList2 = arrayListOf<MenuModel>()
         tempModelList2 = arrayListOf<MenuModel>()
+        val fragmentcontext = this
 
         val menuDrinkAPI = RetrofitHelper.getInstance().create(EndpointMenuDrink::class.java)
         val menuFoodAPI = RetrofitHelper.getInstance().create(EndpointMenuFood::class.java)
@@ -116,11 +126,12 @@ class Menu : Fragment() {
                 val datamakanan = menuFoodData!!.body()!!.data
                 for (i in datamakanan){
                     val name = i.name
-                    val price = i.currency + ". " + i.price.toString()
+                    val price = i.price.toInt()
                     val sold = "Terjual " + i.sold.toString()
                     val desc = i.description
+                    val currency = i.currency
                     val quantity = 0
-                    modelList.add(MenuModel(name,price,sold,desc,0))
+                    modelList.add(MenuModel(name,price,sold,desc,quantity,currency))
                 }
                 tempModelList.addAll(modelList)
             }
@@ -132,11 +143,12 @@ class Menu : Fragment() {
                 val dataminuman = menuDrinkData!!.body()!!.data
                 for (i in dataminuman){
                     val name = i.name
-                    val price = i.currency + ". " + i.price.toString()
+                    val price = i.price.toInt()
                     val sold = "Terjual " + i.sold.toString()
                     val desc = i.description
+                    val currency = i.currency
                     val quantity = 0
-                    modelList2.add(MenuModel(name,price,sold,desc,0))
+                    modelList2.add(MenuModel(name,price,sold,desc,quantity,currency))
                 }
                 tempModelList2.addAll(modelList2)
             }
@@ -147,20 +159,33 @@ class Menu : Fragment() {
             recyclerView = view.findViewById(R.id.Daftar_Makanan)
             recyclerView.layoutManager = layoutManager
             recyclerView.setHasFixedSize(true)
-            adapter = MenuAdapter(tempModelList)
+            adapter = MenuAdapter(tempModelList, fragmentcontext)
             recyclerView.adapter = adapter
 
             val layoutManager2 = LinearLayoutManager(context)
             recyclerView2 = view.findViewById(R.id.Daftar_Minuman)
             recyclerView2.layoutManager = layoutManager2
             recyclerView2.setHasFixedSize(true)
-            adapter2 = MenuAdapter(tempModelList2)
+            adapter2 = MenuAdapter(tempModelList2,fragmentcontext)
             recyclerView2.adapter = adapter2
 
             recyclerView.setNestedScrollingEnabled(false);
             recyclerView2.setNestedScrollingEnabled(false);
 
         }
+
+    }
+    override fun add(cartItem: CartItem){
+        cartItemViewModel.insert(cartItem)
+
+    }
+
+    override fun delete(cartItem: CartItem){
+        cartItemViewModel.delete(cartItem)
+    }
+
+    override fun update(cartItem: CartItem){
+        cartItemViewModel.update(cartItem)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {

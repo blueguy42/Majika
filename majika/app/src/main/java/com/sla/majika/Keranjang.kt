@@ -38,6 +38,7 @@ class Keranjang : Fragment(), CartItemClickListener {
     lateinit var adapter: CartItemsAdapter
     lateinit var total_harga : TextView
     lateinit var hargaArr: List<CurrencyPrice>
+    lateinit var btnPembayaran : Button
 
     private val cartItemViewModel: CartItemViewModel by viewModels {
         CartItemViewModelFactory((activity?.application as MajikaApp).repository)
@@ -54,7 +55,7 @@ class Keranjang : Fragment(), CartItemClickListener {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_keranjang, container, false)
-        val btnPembayaran = view.findViewById<Button>(R.id.buttonPembayaran)
+        btnPembayaran = view.findViewById<Button>(R.id.buttonPembayaran)
         btnPembayaran.setOnClickListener {
             val intent = Intent(activity, Pembayaran::class.java)
             intent.putExtra("total_harga", getHarga())
@@ -109,9 +110,12 @@ class Keranjang : Fragment(), CartItemClickListener {
                 temp += " + "
             }
         }
-        if (temp == "")
+        if (temp == "") {
+            btnPembayaran.setVisibility(View.GONE)
             return "IDR. 0"
+        }
         else {
+            btnPembayaran.setVisibility(View.VISIBLE)
             return temp
         }
     }

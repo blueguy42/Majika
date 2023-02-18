@@ -3,6 +3,7 @@ package com.sla.majika.room
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
+import java.util.Currency
 
 class CartItemViewModel(private val repository: CartItemRepository) : ViewModel() {
 
@@ -14,6 +15,10 @@ class CartItemViewModel(private val repository: CartItemRepository) : ViewModel(
 
     fun getAll() : List<CartItem>{
         return repository.getAll()
+    }
+
+    fun getHargaTotal() : List<CurrencyPrice>{
+        return repository.getHargaTotal()
     }
 
     fun insert(item: CartItem) = viewModelScope.launch {

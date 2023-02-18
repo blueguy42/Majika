@@ -9,4 +9,5 @@ data class CartItem(
     @PrimaryKey @ColumnInfo(name = "nama") val nama : String,
     val harga : Int,
     var quantity : Int,
+    var currency : String,
 )

@@ -41,10 +41,10 @@ class MenuAdapter(private val menuList: ArrayList<MenuModel>, val clickListener 
 
         holder.add.setOnClickListener {
             if (currentItem.quantity == 0){
-                holder.clickListener.add(CartItem(currentItem.nama,currentItem.harga.toInt(),1))
+                holder.clickListener.add(CartItem(currentItem.nama,currentItem.harga.toInt(),1, currentItem.currency))
             }
             else {
-                holder.clickListener.update(CartItem(currentItem.nama,currentItem.harga.toInt(),currentItem.quantity + 1))
+                holder.clickListener.update(CartItem(currentItem.nama,currentItem.harga.toInt(),currentItem.quantity + 1,currentItem.currency))
             }
             menuList[position].quantity = menuList[position].quantity + 1
             notifyDataSetChanged()
@@ -52,11 +52,11 @@ class MenuAdapter(private val menuList: ArrayList<MenuModel>, val clickListener 
 
         holder.dec.setOnClickListener{
             if (menuList[position].quantity == 1) {
-                holder.clickListener.add(CartItem(currentItem.nama,currentItem.harga.toInt(),1))
+                holder.clickListener.add(CartItem(currentItem.nama,currentItem.harga.toInt(),1, currentItem.currency))
                 menuList[position].quantity = menuList[position].quantity - 1
                 notifyDataSetChanged()
             } else if (menuList[position].quantity > 1){
-                holder.clickListener.update(CartItem(currentItem.nama,currentItem.harga.toInt(),currentItem.quantity - 1))
+                holder.clickListener.update(CartItem(currentItem.nama,currentItem.harga.toInt(),currentItem.quantity - 1, currentItem.currency))
                 menuList[position].quantity = menuList[position].quantity - 1
                 notifyDataSetChanged()
             }

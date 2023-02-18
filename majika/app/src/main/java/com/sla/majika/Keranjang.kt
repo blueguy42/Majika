@@ -8,10 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textfield.TextInputEditText
 import com.sla.majika.databinding.ActivityMainBinding
 import com.sla.majika.room.*
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +36,9 @@ class Keranjang : Fragment(), CartItemClickListener {
     lateinit var recyclerView: RecyclerView
     lateinit var cartItemList: ArrayList<CartItem>
     lateinit var adapter: CartItemsAdapter
+    lateinit var total_harga : TextView
+    lateinit var hargaArr: List<CurrencyPrice>
+
     private val cartItemViewModel: CartItemViewModel by viewModels {
         CartItemViewModelFactory((activity?.application as MajikaApp).repository)
     }
@@ -76,6 +81,7 @@ class Keranjang : Fragment(), CartItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        total_harga = view.findViewById(R.id.harga_total)
         cartItemList = arrayListOf<CartItem>()
 
         var layoutManager = LinearLayoutManager(context)
@@ -84,11 +90,28 @@ class Keranjang : Fragment(), CartItemClickListener {
         recyclerView.setHasFixedSize(true)
         adapter = CartItemsAdapter(cartItemList,this)
         recyclerView.adapter = adapter
+        total_harga.text = getHarga()
 
         cartItemViewModel.allItems.observe(viewLifecycleOwner){
             adapter = CartItemsAdapter(ArrayList(it), this)
             recyclerView.adapter = adapter
-            recyclerView.adapter!!.notifyDataSetChanged()
+            total_harga.text = getHarga()
+        }
+    }
+
+    fun getHarga(): String{
+        var temp = ""
+        hargaArr = cartItemViewModel.getHargaTotal()
+        for (i in 0 until hargaArr.size){
+            temp +=  hargaArr[i].currency + ". " + hargaArr[i].totalharga
+            if (i != hargaArr.size -1){
+                temp += " + "
+            }
+        }
+        if (temp == "")
+            return "IDR. 0"
+        else {
+            return temp
         }
     }
 

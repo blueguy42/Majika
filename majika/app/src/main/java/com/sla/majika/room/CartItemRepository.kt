@@ -14,6 +14,10 @@ class CartItemRepository(private val dao: CartItemDAO) {
         return dao.getByNama(nama)
     }
 
+    fun getHargaTotal(): List<CurrencyPrice> {
+        return dao.getHargaTotal()
+    }
+
     fun getAll(): List<CartItem> {
         return dao.getAll()
     }
@@ -29,6 +33,8 @@ class CartItemRepository(private val dao: CartItemDAO) {
     fun update(cartItem: CartItem){
         dao.update(cartItem)
     }
+
+
 
     fun deleteAll(){
         dao.deleteAll()

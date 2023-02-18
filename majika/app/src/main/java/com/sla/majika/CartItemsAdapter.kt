@@ -32,20 +32,20 @@ class CartItemsAdapter(private val cartItemList: ArrayList<CartItem>, val clickL
     override fun onBindViewHolder(holder: CartItemViewHolder, position: Int) {
         val currentItem = cartItemList[position]
         holder.nama.text = currentItem.nama
-        holder.harga.text = currentItem.harga.toString()
-        holder.quantity.text = currentItem.quantity.toString()
+        holder.harga.text = currentItem.currency + ". " + currentItem.harga.toString()
+        holder.quantity.text =  currentItem.quantity.toString()
 
         holder.add.setOnClickListener {
-            holder.clickListener.update(CartItem(currentItem.nama,currentItem.harga,currentItem.quantity + 1))
+            holder.clickListener.update(CartItem(currentItem.nama,currentItem.harga,currentItem.quantity + 1, currentItem.currency))
             notifyDataSetChanged()
         }
 
         holder.dec.setOnClickListener {
             if (currentItem.quantity == 1){
-                holder.clickListener.delete(CartItem(currentItem.nama,currentItem.harga,currentItem.quantity))
+                holder.clickListener.delete(CartItem(currentItem.nama,currentItem.harga,currentItem.quantity, currentItem.currency))
             }
             else {
-                holder.clickListener.update(CartItem(currentItem.nama,currentItem.harga,currentItem.quantity - 1))
+                holder.clickListener.update(CartItem(currentItem.nama,currentItem.harga,currentItem.quantity - 1, currentItem.currency))
             }
 
             notifyDataSetChanged()

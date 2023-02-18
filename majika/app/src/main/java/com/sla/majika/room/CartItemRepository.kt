@@ -8,9 +8,7 @@ import kotlinx.coroutines.flow.Flow
 // instead of the whole database, because you only need access to the DAO
 class CartItemRepository(private val dao: CartItemDAO) {
 
-    fun get(): List<CartItem>{
-        return dao.get();
-    }
+    val allCartItems: Flow<List<CartItem>> = dao.get()
 
     fun getByNama(nama:String): CartItem{
         return dao.getByNama(nama)
@@ -26,5 +24,9 @@ class CartItemRepository(private val dao: CartItemDAO) {
 
     fun update(cartItem: CartItem){
         dao.update(cartItem)
+    }
+
+    fun deleteAll(){
+        dao.deleteAll()
     }
 }

@@ -8,9 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.sla.majika.databinding.ActivityMainBinding
 import com.sla.majika.room.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -27,14 +29,18 @@ private const val ARG_PARAM2 = "param2"
  * Use the [Keranjang.newInstance] factory method to
  * create an instance of this fragment.
  */
-class Keranjang : Fragment() {
+class Keranjang : Fragment(), CartItemClickListener {
+    private lateinit var binding: ActivityMainBinding
     lateinit var recyclerView: RecyclerView
     lateinit var cartItemList: ArrayList<CartItem>
     lateinit var adapter: CartItemsAdapter
-    lateinit var repo: CartItemRepository
+    private val cartItemViewModel: CartItemViewModel by viewModels {
+        CartItemViewModelFactory((activity?.application as MajikaApp).repository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
     }
 
     override fun onCreateView(
@@ -45,35 +51,44 @@ class Keranjang : Fragment() {
         val view = inflater.inflate(R.layout.fragment_keranjang, container, false)
         val btnPembayaran = view.findViewById<Button>(R.id.buttonPembayaran)
         btnPembayaran.setOnClickListener {
-            val intent = Intent(activity, Pembayaran::class.java)
-            startActivity(intent)
+//            val intent = Intent(activity, Pembayaran::class.java)
+//            startActivity(intent)
+            lifecycleScope.launch { // coroutine on Main
+                add(CartItem("1",2,3))
+            }
+
         }
         return view
+    }
+
+    override fun add(cartItem: CartItem){
+        cartItemViewModel.insert(cartItem)
+
+    }
+
+    override fun remove(cartItem: CartItem){
+        cartItemViewModel.delete(cartItem)
+    }
+
+    fun deleteAll(){
+        cartItemViewModel.deleteAll()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         cartItemList = arrayListOf<CartItem>()
 
-        lifecycleScope.launch {
-            val operation = GlobalScope.async(Dispatchers.Default){
-                val dao = CartItemRoomDatabase.getDatabase(requireActivity()).CartItemDAO()
-                repo = CartItemRepository(dao)
-                repo.insert(CartItem("wow",10000,2))
-                repo.insert(CartItem("wow2",10000,2))
-                cartItemList = ArrayList(repo.get())
-                Log.d("yrdz",cartItemList.toString())
-            }
-            operation.await()
-//        cartItemList.add(CartItem("wow",10000,2))
+        var layoutManager = LinearLayoutManager(context)
+        recyclerView = view.findViewById(R.id.Daftar_Cart)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.setHasFixedSize(true)
+        adapter = CartItemsAdapter(cartItemList,this)
+        recyclerView.adapter = adapter
 
-            val layoutManager = LinearLayoutManager(context)
-            recyclerView = view.findViewById(R.id.Daftar_Cart)
-            recyclerView.layoutManager = layoutManager
-            recyclerView.setHasFixedSize(true)
-            adapter = CartItemsAdapter(cartItemList)
-            Log.d("yrdz",cartItemList.toString())
+        cartItemViewModel.allItems.observe(viewLifecycleOwner){
+            adapter = CartItemsAdapter(ArrayList(it), this)
             recyclerView.adapter = adapter
+            recyclerView.adapter!!.notifyDataSetChanged()
         }
     }
 

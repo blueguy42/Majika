@@ -1,18 +1,13 @@
 package com.sla.majika.room
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CartItemDAO {
 
     @Query("SELECT * FROM cart_item_table")
-    fun get(): List<CartItem>
+    fun get(): Flow<List<CartItem>>
 
     @Query("SELECT * FROM cart_item_table WHERE nama = :nama")
     fun getByNama(nama: String): CartItem
@@ -25,4 +20,7 @@ interface CartItemDAO {
 
     @Update
     fun update(cartItem: CartItem)
+
+    @Query("DELETE FROM cart_item_table")
+    fun deleteAll()
 }

@@ -45,7 +45,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/nama_cart" />
 
             <Button
-                android:id="@+id/add_menu"
+                android:id="@+id/add_cart"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="60dp"
@@ -66,11 +66,11 @@
                 android:layout_marginEnd="12dp"
                 android:text="0"
                 android:textColor="#FFFFFF"
-                app:layout_constraintEnd_toStartOf="@+id/add_menu"
+                app:layout_constraintEnd_toStartOf="@+id/add_cart"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/decrease_menu"
+                android:id="@+id/decrease_cart"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="64dp"

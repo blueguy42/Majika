@@ -25,7 +25,7 @@ public abstract class CartItemRoomDatabase : RoomDatabase() {
                     context.applicationContext,
                     CartItemRoomDatabase::class.java,
                     "word_database"
-                ).build()
+                ).allowMainThreadQueries().build()
                 INSTANCE = instance
                 // return instance
                 instance

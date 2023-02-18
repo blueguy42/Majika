@@ -8,5 +8,5 @@ import androidx.room.PrimaryKey
 data class CartItem(
     @PrimaryKey @ColumnInfo(name = "nama") val nama : String,
     val harga : Int,
-    val quantity : Int
+    var quantity : Int,
 )

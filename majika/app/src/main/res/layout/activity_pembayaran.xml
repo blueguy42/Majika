@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:text="Scan QR Code"
         android:textSize="36dp"
+        android:textColor="#FFFFFF"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -33,7 +34,8 @@
         android:id="@+id/total_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Rp. 99.990"
+        android:text=""
+        android:textColor="#FFFFFF"
         android:textSize="24dp"
 
         app:layout_constraintBottom_toBottomOf="parent"
@@ -49,6 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
+        android:textColor="#FFFFFF"
         android:textSize="24dp"
 
         app:layout_constraintBottom_toBottomOf="parent"

@@ -9,6 +9,9 @@ interface CartItemDAO {
     @Query("SELECT * FROM cart_item_table")
     fun get(): Flow<List<CartItem>>
 
+    @Query("SELECT * FROM cart_item_table")
+    fun getAll(): List<CartItem>
+
     @Query("SELECT * FROM cart_item_table WHERE nama = :nama")
     fun getByNama(nama: String): CartItem
 

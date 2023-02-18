@@ -12,6 +12,10 @@ class CartItemViewModel(private val repository: CartItemRepository) : ViewModel(
      * Launching a new coroutine to insert the data in a non-blocking way
      */
 
+    fun getAll() : List<CartItem>{
+        return repository.getAll()
+    }
+
     fun insert(item: CartItem) = viewModelScope.launch {
         repository.insert(item)
     }

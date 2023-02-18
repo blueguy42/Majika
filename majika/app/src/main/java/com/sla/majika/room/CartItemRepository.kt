@@ -14,6 +14,10 @@ class CartItemRepository(private val dao: CartItemDAO) {
         return dao.getByNama(nama)
     }
 
+    fun getAll(): List<CartItem> {
+        return dao.getAll()
+    }
+
     fun insert(cartItem: CartItem){
         dao.insert(cartItem)
     }

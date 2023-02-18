@@ -46,6 +46,7 @@ class Menu : Fragment(), CartItemClickListener {
     lateinit var tempModelList2: ArrayList<MenuModel>
     lateinit var adapter: MenuAdapter
     lateinit var adapter2: MenuAdapter
+    lateinit var kuantitasArr: List<CartItem>
     private val cartItemViewModel: CartItemViewModel by viewModels {
         CartItemViewModelFactory((activity?.application as MajikaApp).repository)
     }
@@ -53,6 +54,8 @@ class Menu : Fragment(), CartItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+
+        kuantitasArr = cartItemViewModel.getAll()
     }
 
     override fun onCreateOptionsMenu(menu: android.view.Menu, inflater: MenuInflater) {
@@ -122,7 +125,6 @@ class Menu : Fragment(), CartItemClickListener {
             val menuFoodData = menuFoodAPI.getMenuFood()
             if (menuFoodData != null) {
                 // Checking the result
-                Log.d("GetData", menuFoodData.body().toString())
                 val datamakanan = menuFoodData!!.body()!!.data
                 for (i in datamakanan){
                     val name = i.name
@@ -130,7 +132,7 @@ class Menu : Fragment(), CartItemClickListener {
                     val sold = "Terjual " + i.sold.toString()
                     val desc = i.description
                     val currency = i.currency
-                    val quantity = 0
+                    val quantity = getQuantityByNama(i.name)
                     modelList.add(MenuModel(name,price,sold,desc,quantity,currency))
                 }
                 tempModelList.addAll(modelList)
@@ -139,7 +141,6 @@ class Menu : Fragment(), CartItemClickListener {
             val menuDrinkData = menuDrinkAPI.getMenuDrink()
             if (menuDrinkData != null) {
                 // Checking the result
-                Log.d("GetData", menuDrinkData.body().toString())
                 val dataminuman = menuDrinkData!!.body()!!.data
                 for (i in dataminuman){
                     val name = i.name
@@ -147,7 +148,7 @@ class Menu : Fragment(), CartItemClickListener {
                     val sold = "Terjual " + i.sold.toString()
                     val desc = i.description
                     val currency = i.currency
-                    val quantity = 0
+                    val quantity = getQuantityByNama(i.name)
                     modelList2.add(MenuModel(name,price,sold,desc,quantity,currency))
                 }
                 tempModelList2.addAll(modelList2)
@@ -186,6 +187,15 @@ class Menu : Fragment(), CartItemClickListener {
 
     override fun update(cartItem: CartItem){
         cartItemViewModel.update(cartItem)
+    }
+
+    fun getQuantityByNama(nama: String): Int{
+        for (i in kuantitasArr){
+            if (i.nama == nama){
+                return i.quantity
+            }
+        }
+        return 0
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {

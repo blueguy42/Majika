@@ -57,6 +57,7 @@ class Keranjang : Fragment(), CartItemClickListener {
         val btnPembayaran = view.findViewById<Button>(R.id.buttonPembayaran)
         btnPembayaran.setOnClickListener {
             val intent = Intent(activity, Pembayaran::class.java)
+            intent.putExtra("total_harga", getHarga())
             startActivity(intent)
         }
         return view

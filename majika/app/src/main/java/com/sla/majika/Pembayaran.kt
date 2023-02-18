@@ -1,17 +1,15 @@
 package com.sla.majika
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.budiyev.android.codescanner.AutoFocusMode
-import com.budiyev.android.codescanner.CodeScanner
-import com.budiyev.android.codescanner.CodeScannerView
-import com.budiyev.android.codescanner.DecodeCallback
-import com.budiyev.android.codescanner.ErrorCallback
-import com.budiyev.android.codescanner.ScanMode
+import com.budiyev.android.codescanner.*
 import com.sla.majika.helper.PermissionCheck
 import com.sla.majika.retrofit.RetrofitHelper
 import com.sla.majika.retrofit.endpoint.EndpointPayment
@@ -26,6 +24,9 @@ class Pembayaran : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pembayaran)
+        val intent = intent
+        val total_harga = intent.extras!!.getString("total_harga")
+
         if (!PermissionCheck.isPermissionGranted(this, Manifest.permission.CAMERA)) {
             // only able to ask permission 2 times:
             // https://developer.android.com/training/permissions/requesting#handle-denial
@@ -33,6 +34,9 @@ class Pembayaran : AppCompatActivity() {
             this.finish()
             return
         } else {
+            val totalHarga: TextView = findViewById<TextView>(R.id.total_price)
+            totalHarga.text = total_harga
+
             val scannerView = findViewById<CodeScannerView>(R.id.scanner_view)
 
             codeScanner = CodeScanner(this, scannerView)
@@ -47,10 +51,10 @@ class Pembayaran : AppCompatActivity() {
             // Callbacks
             codeScanner.decodeCallback = DecodeCallback {
                 runOnUiThread {
-                    Toast.makeText(this, "Scan result: ${it.text}", Toast.LENGTH_LONG).show()
+//                    Toast.makeText(this, "Scan result: ${it.text}", Toast.LENGTH_LONG).show()
 
-                    val textView: TextView = findViewById<TextView>(R.id.scan_result)
-                    textView.text = it.text
+//                    val textView: TextView = findViewById<TextView>(R.id.scan_result)
+//                    textView.text = it.text
 
                     val endpointPaymentAPI =
                         RetrofitHelper.getInstance().create(EndpointPayment::class.java)
@@ -58,10 +62,39 @@ class Pembayaran : AppCompatActivity() {
                         val paymentResponse = endpointPaymentAPI.postPayment(it.text)
                         if (paymentResponse != null) {
                             // Checking the results
-                            Log.d("PostData", paymentResponse.body().toString())
+//                            Log.d("PostData", paymentResponse.body().toString())
+//                            Toast.makeText(this@Pembayaran, paymentResponse.body().toString(), Toast.LENGTH_LONG).show()
+                            var result = paymentResponse!!.body()!!.status
+                            Log.d("PostData", result)
+
+                            this@Pembayaran.runOnUiThread(Runnable {
+                                val textView: TextView = findViewById<TextView>(R.id.scan_result)
+                                if (result == "SUCCESS") {
+                                    textView.text = "Payment Success"
+                                } else {
+                                    textView.text = "Payment Failed"
+                                }
+                            })
+
+
+                            if (result == "SUCCESS") {
+                                Handler(Looper.getMainLooper()).postDelayed({
+                                    val intent = Intent(this@Pembayaran, MainActivity::class.java)
+                                    // BELUM BISA KE MENU TOLONG
+//                                    val fragment = Menu()
+//                                    val fragmentManager = supportFragmentManager
+//                                    val fragmentTransaction = fragmentManager.beginTransaction()
+//                                    fragmentTransaction.replace(R.id.frame_layout, fragment)
+//                                    fragmentTransaction.commit()
+                                    startActivity(intent)
+                                    finish()
+                                }, 5000)
+                            } else {
+                                codeScanner.startPreview()
+                            }
+
                         }
                     }
-
                 }
             }
             codeScanner.errorCallback = ErrorCallback { // or ErrorCallback.SUPPRESS
@@ -78,6 +111,7 @@ class Pembayaran : AppCompatActivity() {
             }
         }
     }
+
 
     override fun onResume() {
         super.onResume()

@@ -50,6 +50,12 @@ class MenuAdapter(private val menuList: ArrayList<MenuModel>, val clickListener 
             notifyDataSetChanged()
         }
 
+        if (currentItem.quantity == 0){
+            holder.dec.setVisibility(View.GONE)
+        } else{
+            holder.dec.setVisibility(View.VISIBLE)
+        }
+
         holder.dec.setOnClickListener{
             if (menuList[position].quantity == 1) {
                 holder.clickListener.add(CartItem(currentItem.nama,currentItem.harga.toInt(),1, currentItem.currency))

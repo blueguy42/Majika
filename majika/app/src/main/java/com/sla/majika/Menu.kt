@@ -1,6 +1,8 @@
 package com.sla.majika
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuInflater
@@ -12,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textfield.TextInputEditText
 import com.sla.majika.databinding.ActivityMainBinding
 import com.sla.majika.retrofit.RetrofitHelper
 import com.sla.majika.retrofit.endpoint.EndpointMenuDrink
@@ -47,6 +50,8 @@ class Menu : Fragment(), CartItemClickListener {
     lateinit var adapter: MenuAdapter
     lateinit var adapter2: MenuAdapter
     lateinit var kuantitasArr: List<CartItem>
+    lateinit var text_input: TextInputEditText
+
     private val cartItemViewModel: CartItemViewModel by viewModels {
         CartItemViewModelFactory((activity?.application as MajikaApp).repository)
     }
@@ -56,49 +61,7 @@ class Menu : Fragment(), CartItemClickListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         kuantitasArr = cartItemViewModel.getAll()
-    }
 
-    override fun onCreateOptionsMenu(menu: android.view.Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.search_box, menu);
-        val item = menu?.findItem(R.id.search_action)
-        val searchView = item?.actionView as SearchView
-        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                TODO("Not yet implemented")
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                tempModelList.clear()
-                tempModelList2.clear()
-
-                val searchText = newText!!.lowercase(Locale.getDefault())
-                if (searchText.isNotEmpty()){
-                    for (i in modelList.indices){
-                        if (modelList[i].nama.lowercase(Locale.getDefault()).contains(searchText)){
-                            tempModelList.add(modelList[i])
-                        }
-                        recyclerView.adapter!!.notifyDataSetChanged()
-                    }
-                    for (i in modelList2.indices){
-                        if (modelList2[i].nama.lowercase(Locale.getDefault()).contains(searchText)){
-                            tempModelList2.add(modelList2[i])
-                        }
-                        recyclerView2.adapter!!.notifyDataSetChanged()
-                    }
-                }else{
-                    tempModelList.clear()
-                    tempModelList.addAll(modelList)
-                    tempModelList2.clear()
-                    tempModelList2.addAll(modelList2)
-                    recyclerView.adapter!!.notifyDataSetChanged()
-                    recyclerView2.adapter!!.notifyDataSetChanged()
-                }
-                return false
-            }
-
-        })
-
-        return super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onCreateView(
@@ -172,7 +135,46 @@ class Menu : Fragment(), CartItemClickListener {
 
             recyclerView.setNestedScrollingEnabled(false);
             recyclerView2.setNestedScrollingEnabled(false);
+            text_input = view.findViewById(R.id.text_input)
 
+//            SEARCH
+            text_input.addTextChangedListener(object : TextWatcher {
+
+                override fun afterTextChanged(s: Editable) {}
+
+                override fun beforeTextChanged(s: CharSequence, start: Int,
+                                               count: Int, after: Int) {
+                }
+
+                override fun onTextChanged(s: CharSequence, start: Int,
+                                           before: Int, count: Int) {
+                    var newText = s.toString()
+                    tempModelList.clear()
+                    tempModelList2.clear()
+                    val searchText = newText!!.lowercase(Locale.getDefault())
+                    if (searchText.isNotEmpty()){
+                        for (i in modelList.indices){
+                            if (modelList[i].nama.lowercase(Locale.getDefault()).contains(searchText)){
+                                tempModelList.add(modelList[i])
+                            }
+                            recyclerView.adapter!!.notifyDataSetChanged()
+                        }
+                        for (i in modelList2.indices){
+                            if (modelList2[i].nama.lowercase(Locale.getDefault()).contains(searchText)){
+                                tempModelList2.add(modelList2[i])
+                            }
+                            recyclerView2.adapter!!.notifyDataSetChanged()
+                        }
+                    }else{
+                        tempModelList.clear()
+                        tempModelList.addAll(modelList)
+                        tempModelList2.clear()
+                        tempModelList2.addAll(modelList2)
+                        recyclerView.adapter!!.notifyDataSetChanged()
+                        recyclerView2.adapter!!.notifyDataSetChanged()
+                    }
+                }
+            })
         }
 
     }

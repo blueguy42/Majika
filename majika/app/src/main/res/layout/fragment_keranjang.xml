@@ -16,7 +16,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="578dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -26,7 +26,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/Daftar_Cart"
                     android:layout_width="match_parent"
-                    android:layout_height="577dp">
+                    android:layout_height="match_parent">
 
                 </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
@@ -34,7 +34,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="155dp"
             android:layout_gravity="center_horizontal"
             android:background="#F1CDCD"
             android:orientation="horizontal">
@@ -61,13 +61,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="4dp"
                     android:text="Total: "
                     android:textColor="#000000"
                     android:textSize="17sp"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -80,15 +80,14 @@
                     android:layout_height="56dp"
                     android:layout_gravity="bottom"
                     android:layout_marginStart="41dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="19dp"
                     android:layout_marginEnd="42dp"
-                    android:layout_marginBottom="16dp"
                     android:background="@drawable/button_shape"
                     android:backgroundTint="#C80909"
                     android:backgroundTintMode="add"
                     android:text="Bayar"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>

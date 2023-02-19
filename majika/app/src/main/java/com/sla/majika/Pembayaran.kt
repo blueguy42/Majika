@@ -68,13 +68,12 @@ class Pembayaran : AppCompatActivity() {
             // Callbacks
             codeScanner.decodeCallback = DecodeCallback {
                 runOnUiThread {
-                    val endpointPaymentAPI =
-                        RetrofitHelper.getInstance().create(EndpointPayment::class.java)
+                    val endpointPaymentAPI = RetrofitHelper.getInstance().create(EndpointPayment::class.java)
                     GlobalScope.launch {
                         try {
                             val paymentResponse = endpointPaymentAPI.postPayment(it.text)
                             if (paymentResponse != null) {
-                                var result = paymentResponse!!.body()!!.status
+                                var result = paymentResponse.body()!!.status
                                 Log.d("PostData", result)
 
                                 this@Pembayaran.runOnUiThread(Runnable {

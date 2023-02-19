@@ -17,7 +17,8 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        replaceFragment(Twibbon(), HeaderTwibbon())
+        replaceFragment(Menu(), HeaderTwibbon())
+        binding.bottomNavigationView.selectedItemId = R.id.food
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {

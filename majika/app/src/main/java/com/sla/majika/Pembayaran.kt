@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.budiyev.android.codescanner.*
 import com.google.zxing.BarcodeFormat
 import com.sla.majika.helper.PermissionCheck
@@ -21,6 +22,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import com.sla.majika.room.CartItemViewModel
 import com.sla.majika.room.CartItemViewModelFactory
+
+import com.sla.majika.fragment.header.HeaderPembayaran
 
 
 class Pembayaran : AppCompatActivity() {
@@ -34,6 +37,8 @@ class Pembayaran : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pembayaran)
+        replaceFragment(HeaderPembayaran())
+
         val intent = intent
         val total_harga = intent.extras!!.getString("total_harga")
 
@@ -123,5 +128,12 @@ class Pembayaran : AppCompatActivity() {
     override fun onPause() {
         codeScanner.releaseResources()
         super.onPause()
+    }
+
+    private fun replaceFragment(header: Fragment) {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.header_layout_pembayaran, header)
+        fragmentTransaction.commit()
     }
 }

@@ -9,6 +9,8 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.budiyev.android.codescanner.*
 import com.sla.majika.helper.PermissionCheck
@@ -16,12 +18,18 @@ import com.sla.majika.retrofit.RetrofitHelper
 import com.sla.majika.retrofit.endpoint.EndpointPayment
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import com.sla.majika.room.CartItemViewModel
+import com.sla.majika.room.CartItemViewModelFactory
 
 
 class Pembayaran : AppCompatActivity() {
 
     private lateinit var codeScanner: CodeScanner
-
+    
+    private val cartItemViewModel: CartItemViewModel by viewModels {
+        CartItemViewModelFactory((this?.application as MajikaApp).repository)
+    }
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pembayaran)
@@ -52,19 +60,12 @@ class Pembayaran : AppCompatActivity() {
             // Callbacks
             codeScanner.decodeCallback = DecodeCallback {
                 runOnUiThread {
-//                    Toast.makeText(this, "Scan result: ${it.text}", Toast.LENGTH_LONG).show()
-
-//                    val textView: TextView = findViewById<TextView>(R.id.scan_result)
-//                    textView.text = it.text
-
                     val endpointPaymentAPI =
                         RetrofitHelper.getInstance().create(EndpointPayment::class.java)
                     GlobalScope.launch {
                         val paymentResponse = endpointPaymentAPI.postPayment(it.text)
                         if (paymentResponse != null) {
-                            // Checking the results
 //                            Log.d("PostData", paymentResponse.body().toString())
-//                            Toast.makeText(this@Pembayaran, paymentResponse.body().toString(), Toast.LENGTH_LONG).show()
                             var result = paymentResponse!!.body()!!.status
                             Log.d("PostData", result)
 
@@ -86,6 +87,7 @@ class Pembayaran : AppCompatActivity() {
 
                             if (result == "SUCCESS") {
                                 Handler(Looper.getMainLooper()).postDelayed({
+                                    cartItemViewModel.deleteAll()
                                     val intent = Intent(this@Pembayaran, MainActivity::class.java)
                                     // BELUM BISA KE MENU TOLONG
 //                                    val fragment = Menu()

@@ -2,9 +2,7 @@ package com.sla.majika
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.fragment.app.Fragment
-import com.google.common.util.concurrent.ListenableFuture
 import com.sla.majika.databinding.ActivityMainBinding
 import com.sla.majika.fragment.header.HeaderCabang
 import com.sla.majika.fragment.header.HeaderKeranjang

@@ -72,5 +72,6 @@
     <string name="fragment_keranjang">Keranjang</string>
     <string name="fragment_cabang_restoran">Cabang Restoran</string>
     <string name="fragment_pembayaran">Pembayaran</string>
+    <string name="fragment_menu">Menu</string>
 
 </resources>

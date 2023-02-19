@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import com.sla.majika.databinding.ActivityMainBinding
 import com.sla.majika.fragment.header.HeaderCabang
 import com.sla.majika.fragment.header.HeaderKeranjang
+import com.sla.majika.fragment.header.HeaderMenu
 import com.sla.majika.fragment.header.HeaderTwibbon
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,17 +16,22 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        replaceFragment(Menu(), HeaderTwibbon())
-        binding.bottomNavigationView.selectedItemId = R.id.food
+        val origin = intent.getStringExtra("origin")
+        if (origin == "splash") {
+            replaceFragment(Menu(), HeaderMenu())
+            binding.bottomNavigationView.selectedItemId = R.id.food
+        } else {
+            replaceFragment(Keranjang(), HeaderKeranjang())
+            binding.bottomNavigationView.selectedItemId = R.id.cart
+        }
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.camera -> replaceFragment(Twibbon(), HeaderTwibbon())
                 R.id.location -> replaceFragment(CabangRestoran(), HeaderCabang())
-                R.id.food -> replaceFragment(Menu(), HeaderTwibbon())
+                R.id.food -> replaceFragment(Menu(), HeaderMenu())
                 R.id.cart -> replaceFragment(Keranjang(), HeaderKeranjang())
                 else -> {
                 }

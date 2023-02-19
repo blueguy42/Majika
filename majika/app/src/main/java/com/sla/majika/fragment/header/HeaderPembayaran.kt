@@ -25,7 +25,7 @@ class HeaderPembayaran : Fragment() {
         val btnBack = view.findViewById<Button>(R.id.button_back)
         btnBack.setOnClickListener {
             val intent = Intent(activity, MainActivity::class.java)
-
+            intent.putExtra("origin", "pembayaran")
             startActivity(intent)
         }
         return view

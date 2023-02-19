@@ -1,5 +1,6 @@
 package com.sla.majika
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,6 +10,7 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -22,10 +24,7 @@ import com.sla.majika.retrofit.endpoint.EndpointMenuFood
 import com.sla.majika.room.CartItem
 import com.sla.majika.room.CartItemViewModel
 import com.sla.majika.room.CartItemViewModelFactory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -39,7 +38,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class Menu : Fragment(), CartItemClickListener {
-    // TODO: Rename and change types of parameters
+    private lateinit var mContext: Context
     private lateinit var binding: ActivityMainBinding
     lateinit var recyclerView: RecyclerView
     lateinit var recyclerView2: RecyclerView
@@ -85,36 +84,41 @@ class Menu : Fragment(), CartItemClickListener {
         val menuFoodAPI = RetrofitHelper.getInstance().create(EndpointMenuFood::class.java)
         lifecycleScope.launch {
         val operation = GlobalScope.async(Dispatchers.Default) {
-            val menuFoodData = menuFoodAPI.getMenuFood()
-            if (menuFoodData != null) {
-                // Checking the result
-                val datamakanan = menuFoodData!!.body()!!.data
-                for (i in datamakanan){
-                    val name = i.name
-                    val price = i.price.toInt()
-                    val sold = i.sold.toInt()
-                    val desc = i.description
-                    val currency = i.currency
-                    val quantity = getQuantityByNama(name,price,currency,sold,desc)
-                    modelList.add(CartItem(name,price,quantity,currency,sold,desc))
+            try {
+                val menuFoodData = menuFoodAPI.getMenuFood()
+                if (menuFoodData != null) {
+                    // Checking the result
+                    val datamakanan = menuFoodData!!.body()!!.data
+                    for (i in datamakanan){
+                        val name = i.name
+                        val price = i.price.toInt()
+                        val sold = i.sold.toInt()
+                        val desc = i.description
+                        val currency = i.currency
+                        val quantity = getQuantityByNama(name,price,currency,sold,desc)
+                        modelList.add(CartItem(name,price,quantity,currency,sold,desc))
+                    }
+                    tempModelList.addAll(modelList)
                 }
-                tempModelList.addAll(modelList)
-            }
 
-            val menuDrinkData = menuDrinkAPI.getMenuDrink()
-            if (menuDrinkData != null) {
-                // Checking the result
-                val dataminuman = menuDrinkData!!.body()!!.data
-                for (i in dataminuman){
-                    val name = i.name
-                    val price = i.price.toInt()
-                    val sold = i.sold.toInt()
-                    val desc = i.description
-                    val currency = i.currency
-                    val quantity = getQuantityByNama(name,price,currency,sold,desc)
-                    modelList2.add(CartItem(name,price,quantity,currency,sold,desc))
+                val menuDrinkData = menuDrinkAPI.getMenuDrink()
+                if (menuDrinkData != null) {
+                    // Checking the result
+                    val dataminuman = menuDrinkData!!.body()!!.data
+                    for (i in dataminuman){
+                        val name = i.name
+                        val price = i.price.toInt()
+                        val sold = i.sold.toInt()
+                        val desc = i.description
+                        val currency = i.currency
+                        val quantity = getQuantityByNama(name,price,currency,sold,desc)
+                        modelList2.add(CartItem(name,price,quantity,currency,sold,desc))
+                    }
+                    tempModelList2.addAll(modelList2)
                 }
-                tempModelList2.addAll(modelList2)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {Toast.makeText(mContext, "Connection timed out", Toast.LENGTH_SHORT).show()}
             }
         }
             operation.await()
@@ -203,6 +207,11 @@ class Menu : Fragment(), CartItemClickListener {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
 
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mContext = context
     }
 
     companion object {

@@ -1,6 +1,7 @@
 package com.sla.majika
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -24,6 +25,8 @@ import com.sla.majika.room.CartItemViewModel
 import com.sla.majika.room.CartItemViewModelFactory
 
 import com.sla.majika.fragment.header.HeaderPembayaran
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 class Pembayaran : AppCompatActivity() {
@@ -68,38 +71,47 @@ class Pembayaran : AppCompatActivity() {
                     val endpointPaymentAPI =
                         RetrofitHelper.getInstance().create(EndpointPayment::class.java)
                     GlobalScope.launch {
-                        val paymentResponse = endpointPaymentAPI.postPayment(it.text)
-                        if (paymentResponse != null) {
-                            var result = paymentResponse!!.body()!!.status
-                            Log.d("PostData", result)
+                        try {
+                            val paymentResponse = endpointPaymentAPI.postPayment(it.text)
+                            if (paymentResponse != null) {
+                                var result = paymentResponse!!.body()!!.status
+                                Log.d("PostData", result)
 
-                            this@Pembayaran.runOnUiThread(Runnable {
-                                val result1: TextView = findViewById<TextView>(R.id.scan_result)
-                                val result2: TextView = findViewById<TextView>(R.id.scan_result2)
-                                val result_icon: ImageView = findViewById<ImageView>(R.id.scan_result_icon)
+                                this@Pembayaran.runOnUiThread(Runnable {
+                                    val result1: TextView = findViewById<TextView>(R.id.scan_result)
+                                    val result2: TextView = findViewById<TextView>(R.id.scan_result2)
+                                    val result_icon: ImageView = findViewById<ImageView>(R.id.scan_result_icon)
+                                    if (result == "SUCCESS") {
+                                        result1.text = "Berhasil"
+                                        result2.text = "Sudah dibayar"
+                                        result_icon.setImageResource(R.drawable.baseline_check_circle_24)
+                                    } else {
+                                        result1.text = "Gagal"
+                                        result2.text = "Belum dibayar"
+                                        result_icon.setImageResource(R.drawable.baseline_x_circle_24)
+                                    }
+                                })
+
+
                                 if (result == "SUCCESS") {
-                                    result1.text = "Berhasil"
-                                    result2.text = "Sudah dibayar"
-                                    result_icon.setImageResource(R.drawable.baseline_check_circle_24)
+                                    Handler(Looper.getMainLooper()).postDelayed({
+                                        cartItemViewModel.deleteAll()
+                                        val intent = Intent(this@Pembayaran, MainActivity::class.java)
+                                        startActivity(intent)
+                                        finish()
+                                    }, 5000)
                                 } else {
-                                    result1.text = "Gagal"
-                                    result2.text = "Belum dibayar"
-                                    result_icon.setImageResource(R.drawable.baseline_x_circle_24)
+                                    codeScanner.startPreview()
                                 }
-                            })
 
-
-                            if (result == "SUCCESS") {
-                                Handler(Looper.getMainLooper()).postDelayed({
-                                    cartItemViewModel.deleteAll()
-                                    val intent = Intent(this@Pembayaran, MainActivity::class.java)
-                                    startActivity(intent)
-                                    finish()
-                                }, 5000)
-                            } else {
-                                codeScanner.startPreview()
                             }
 
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            withContext(Dispatchers.Main) {Toast.makeText(this@Pembayaran, "Connection timed out", Toast.LENGTH_SHORT).show()}
+                            val intent = Intent(this@Pembayaran, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
                         }
                     }
                 }
@@ -118,7 +130,6 @@ class Pembayaran : AppCompatActivity() {
             }
         }
     }
-
 
     override fun onResume() {
         super.onResume()

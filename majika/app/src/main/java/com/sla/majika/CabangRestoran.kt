@@ -1,20 +1,19 @@
 package com.sla.majika
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sla.majika.retrofit.RetrofitHelper
 import com.sla.majika.retrofit.endpoint.EndpointBranch
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,6 +29,7 @@ class CabangRestoran : Fragment() {
     lateinit var recyclerView: RecyclerView
     lateinit var cabangResoranList: ArrayList<CabangRestoranModel>
     lateinit var adapter: CabangRestoranAdapter
+    private lateinit var mContext: Context
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,22 +49,27 @@ class CabangRestoran : Fragment() {
         val cabangAPI = RetrofitHelper.getInstance().create(EndpointBranch::class.java)
         lifecycleScope.launch {
             val operation = GlobalScope.async(Dispatchers.Default) {
-                val cabangData = cabangAPI.getBranch()
-                if (cabangData != null) {
-                    // Checking the result
-                    Log.d("GetData", cabangData.body().toString())
-                    val dataCabang = cabangData!!.body()!!.data
-                    for (i in dataCabang){
-                        val name = i.name
-                        val popular_food = i.popular_food
-                        val address = i.address
-                        val contact_person = i.contact_person
-                        val phone_number = i.phone_number
-                        val longitude = i.longitude
-                        val latitude = i.latitude
-                        cabangResoranList.add(CabangRestoranModel(name, popular_food, address, contact_person, phone_number, longitude, latitude))
+                try {
+                    val cabangData = cabangAPI.getBranch()
+                    if (cabangData != null) {
+                        // Checking the result
+                        Log.d("GetData", cabangData.body().toString())
+                        val dataCabang = cabangData!!.body()!!.data
+                        for (i in dataCabang){
+                            val name = i.name
+                            val popular_food = i.popular_food
+                            val address = i.address
+                            val contact_person = i.contact_person
+                            val phone_number = i.phone_number
+                            val longitude = i.longitude
+                            val latitude = i.latitude
+                            cabangResoranList.add(CabangRestoranModel(name, popular_food, address, contact_person, phone_number, longitude, latitude))
+                        }
+                        cabangResoranList.sortBy { it.name }
                     }
-                    cabangResoranList.sortBy { it.name }
+                } catch (e: Exception){
+                    e.printStackTrace()
+                    withContext(Dispatchers.Main) {Toast.makeText(mContext, "Connection timed out", Toast.LENGTH_SHORT).show()}
                 }
             }
             operation.await()
@@ -80,6 +85,11 @@ class CabangRestoran : Fragment() {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
 
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mContext = context
     }
 
 

@@ -17,19 +17,22 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginVertical="15dp"
+            android:textColorHint="#696969"
             app:boxBackgroundColor="#FFCCCC"
             app:boxCornerRadiusBottomEnd="25dp"
             app:boxCornerRadiusBottomStart="25dp"
             app:boxCornerRadiusTopEnd="25dp"
             app:boxCornerRadiusTopStart="25dp"
+            app:boxStrokeColor="@color/mtrl_error"
             app:boxStrokeWidth="0dp"
-            android:textColorHint="#696969" >
+            app:hintTextColor="@color/mtrl_error">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/text_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="search here!" />
+                android:hint="Search here!"
+                android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.core.widget.NestedScrollView

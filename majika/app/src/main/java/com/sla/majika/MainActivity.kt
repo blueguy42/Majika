@@ -1,6 +1,7 @@
 package com.sla.majika
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.sla.majika.databinding.ActivityMainBinding
@@ -9,9 +10,9 @@ import com.sla.majika.fragment.header.HeaderKeranjang
 import com.sla.majika.fragment.header.HeaderMenu
 import com.sla.majika.fragment.header.HeaderTwibbon
 
+var menuId: Int = 0
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,17 +23,52 @@ class MainActivity : AppCompatActivity() {
         if (origin == "splash") {
             replaceFragment(Menu(), HeaderMenu())
             binding.bottomNavigationView.selectedItemId = R.id.food
-        } else {
+        } else if (origin == "pembayaran") {
             replaceFragment(Keranjang(), HeaderKeranjang())
             binding.bottomNavigationView.selectedItemId = R.id.cart
+        } else {
+            when (menuId) {
+                0 -> {
+                    binding.bottomNavigationView.selectedItemId = R.id.camera
+                    replaceFragment(Twibbon(), HeaderTwibbon())
+                }
+                1 -> {
+                    binding.bottomNavigationView.selectedItemId = R.id.location
+                    replaceFragment(CabangRestoran(), HeaderCabang())
+                }
+                2 -> {
+                    binding.bottomNavigationView.selectedItemId = R.id.food
+                    replaceFragment(Menu(), HeaderMenu())
+                }
+                3 -> {
+                    binding.bottomNavigationView.selectedItemId = R.id.cart
+                    replaceFragment(Keranjang(), HeaderKeranjang())
+                }
+                else -> {
+                }
+            }
         }
+
+        intent.removeExtra("origin");
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.camera -> replaceFragment(Twibbon(), HeaderTwibbon())
-                R.id.location -> replaceFragment(CabangRestoran(), HeaderCabang())
-                R.id.food -> replaceFragment(Menu(), HeaderMenu())
-                R.id.cart -> replaceFragment(Keranjang(), HeaderKeranjang())
+                R.id.camera -> {
+                    menuId = 0
+                    replaceFragment(Twibbon(), HeaderTwibbon())
+                }
+                R.id.location -> {
+                    menuId = 1
+                    replaceFragment(CabangRestoran(), HeaderCabang())
+                }
+                R.id.food -> {
+                    menuId = 2
+                    replaceFragment(Menu(), HeaderMenu())
+                }
+                R.id.cart -> {
+                    menuId = 3
+                    replaceFragment(Keranjang(), HeaderKeranjang())
+                }
                 else -> {
                 }
             }

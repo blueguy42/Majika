@@ -30,9 +30,9 @@ class HeaderMenu : Fragment(), SensorEventListener {
         val view = inflater.inflate(R.layout.fragment_header_menu, container, false)
         tempLabel = view.findViewById(R.id.tempLabel)
         mSensorManager = mActivity.getSystemService(SENSOR_SERVICE) as SensorManager
-        mTemperature= mSensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)
+        mTemperature = mSensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)
         if (mTemperature == null) {
-            tempLabel.text = "-°C"
+            tempLabel.text = ""
         }
         return view
     }

@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sla.majika.room.CartItem
 
-class MenuAdapter(private val menuList: ArrayList<MenuModel>, val clickListener : CartItemClickListener) :
+class MenuAdapter(private val menuList: ArrayList<CartItem>, val clickListener : CartItemClickListener) :
     RecyclerView.Adapter<MenuAdapter.MenuViewHolder>() {
 
     class MenuViewHolder(itemView: View, clickListener: CartItemClickListener) : RecyclerView.ViewHolder(itemView){
@@ -35,16 +35,16 @@ class MenuAdapter(private val menuList: ArrayList<MenuModel>, val clickListener 
         val currentItem = menuList[position]
         holder.nama.text = currentItem.nama
         holder.harga.text = currentItem.currency + ". " + currentItem.harga
-        holder.terjual.text = currentItem.terjual
+        holder.terjual.text = "Terjual " + currentItem.terjual.toString()
         holder.deskripsi.text = currentItem.deskripsi
         holder.quantity.text = currentItem.quantity.toString()
 
         holder.add.setOnClickListener {
             if (currentItem.quantity == 0){
-                holder.clickListener.add(CartItem(currentItem.nama,currentItem.harga.toInt(),1, currentItem.currency))
+                holder.clickListener.add(CartItem(currentItem.nama,currentItem.harga.toInt(),1, currentItem.currency,currentItem.terjual,currentItem.deskripsi))
             }
             else {
-                holder.clickListener.update(CartItem(currentItem.nama,currentItem.harga.toInt(),currentItem.quantity + 1,currentItem.currency))
+                holder.clickListener.update(CartItem(currentItem.nama,currentItem.harga.toInt(),currentItem.quantity + 1,currentItem.currency, currentItem.terjual,currentItem.deskripsi))
             }
             menuList[position].quantity = menuList[position].quantity + 1
             notifyDataSetChanged()
@@ -58,11 +58,11 @@ class MenuAdapter(private val menuList: ArrayList<MenuModel>, val clickListener 
 
         holder.dec.setOnClickListener{
             if (menuList[position].quantity == 1) {
-                holder.clickListener.delete(CartItem(currentItem.nama,currentItem.harga.toInt(),1, currentItem.currency))
+                holder.clickListener.delete(CartItem(currentItem.nama,currentItem.harga.toInt(),1, currentItem.currency,currentItem.terjual,currentItem.deskripsi))
                 menuList[position].quantity = menuList[position].quantity - 1
                 notifyDataSetChanged()
             } else if (menuList[position].quantity > 1){
-                holder.clickListener.update(CartItem(currentItem.nama,currentItem.harga.toInt(),currentItem.quantity - 1, currentItem.currency))
+                holder.clickListener.update(CartItem(currentItem.nama,currentItem.harga.toInt(),currentItem.quantity - 1, currentItem.currency,currentItem.terjual,currentItem.deskripsi))
                 menuList[position].quantity = menuList[position].quantity - 1
                 notifyDataSetChanged()
             }

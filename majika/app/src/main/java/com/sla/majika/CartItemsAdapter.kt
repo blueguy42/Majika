@@ -36,16 +36,16 @@ class CartItemsAdapter(private val cartItemList: ArrayList<CartItem>, val clickL
         holder.quantity.text =  currentItem.quantity.toString()
 
         holder.add.setOnClickListener {
-            holder.clickListener.update(CartItem(currentItem.nama,currentItem.harga,currentItem.quantity + 1, currentItem.currency))
+            holder.clickListener.update(CartItem(currentItem.nama,currentItem.harga,currentItem.quantity + 1, currentItem.currency,currentItem.terjual,currentItem.deskripsi))
             notifyDataSetChanged()
         }
 
         holder.dec.setOnClickListener {
             if (currentItem.quantity == 1){
-                holder.clickListener.delete(CartItem(currentItem.nama,currentItem.harga,currentItem.quantity, currentItem.currency))
+                holder.clickListener.delete(CartItem(currentItem.nama,currentItem.harga,currentItem.quantity, currentItem.currency,currentItem.terjual,currentItem.deskripsi))
             }
             else {
-                holder.clickListener.update(CartItem(currentItem.nama,currentItem.harga,currentItem.quantity - 1, currentItem.currency))
+                holder.clickListener.update(CartItem(currentItem.nama,currentItem.harga,currentItem.quantity - 1, currentItem.currency,currentItem.terjual,currentItem.deskripsi))
             }
 
             notifyDataSetChanged()

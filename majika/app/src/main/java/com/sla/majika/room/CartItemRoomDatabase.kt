@@ -24,7 +24,7 @@ public abstract class CartItemRoomDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     CartItemRoomDatabase::class.java,
-                    "majika_database"
+                    "majikaDB"
                 ).allowMainThreadQueries().build()
                 INSTANCE = instance
                 // return instance

@@ -43,10 +43,10 @@ class Menu : Fragment(), CartItemClickListener {
     private lateinit var binding: ActivityMainBinding
     lateinit var recyclerView: RecyclerView
     lateinit var recyclerView2: RecyclerView
-    lateinit var modelList: ArrayList<MenuModel>
-    lateinit var tempModelList: ArrayList<MenuModel>
-    lateinit var modelList2: ArrayList<MenuModel>
-    lateinit var tempModelList2: ArrayList<MenuModel>
+    lateinit var modelList: ArrayList<CartItem>
+    lateinit var tempModelList: ArrayList<CartItem>
+    lateinit var modelList2: ArrayList<CartItem>
+    lateinit var tempModelList2: ArrayList<CartItem>
     lateinit var adapter: MenuAdapter
     lateinit var adapter2: MenuAdapter
     lateinit var kuantitasArr: List<CartItem>
@@ -75,10 +75,10 @@ class Menu : Fragment(), CartItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?){
         super.onViewCreated(view, savedInstanceState)
-        modelList = arrayListOf<MenuModel>()
-        tempModelList = arrayListOf<MenuModel>()
-        modelList2 = arrayListOf<MenuModel>()
-        tempModelList2 = arrayListOf<MenuModel>()
+        modelList = arrayListOf<CartItem>()
+        tempModelList = arrayListOf<CartItem>()
+        modelList2 = arrayListOf<CartItem>()
+        tempModelList2 = arrayListOf<CartItem>()
         val fragmentcontext = this
 
         val menuDrinkAPI = RetrofitHelper.getInstance().create(EndpointMenuDrink::class.java)
@@ -92,11 +92,11 @@ class Menu : Fragment(), CartItemClickListener {
                 for (i in datamakanan){
                     val name = i.name
                     val price = i.price.toInt()
-                    val sold = "Terjual " + i.sold.toString()
+                    val sold = i.sold.toInt()
                     val desc = i.description
                     val currency = i.currency
-                    val quantity = getQuantityByNama(i.name)
-                    modelList.add(MenuModel(name,price,sold,desc,quantity,currency))
+                    val quantity = getQuantityByNama(name,price,currency,sold,desc)
+                    modelList.add(CartItem(name,price,quantity,currency,sold,desc))
                 }
                 tempModelList.addAll(modelList)
             }
@@ -108,11 +108,11 @@ class Menu : Fragment(), CartItemClickListener {
                 for (i in dataminuman){
                     val name = i.name
                     val price = i.price.toInt()
-                    val sold = "Terjual " + i.sold.toString()
+                    val sold = i.sold.toInt()
                     val desc = i.description
                     val currency = i.currency
-                    val quantity = getQuantityByNama(i.name)
-                    modelList2.add(MenuModel(name,price,sold,desc,quantity,currency))
+                    val quantity = getQuantityByNama(name,price,currency,sold,desc)
+                    modelList2.add(CartItem(name,price,quantity,currency,sold,desc))
                 }
                 tempModelList2.addAll(modelList2)
             }
@@ -191,9 +191,9 @@ class Menu : Fragment(), CartItemClickListener {
         cartItemViewModel.update(cartItem)
     }
 
-    fun getQuantityByNama(nama: String): Int{
+    fun getQuantityByNama(nama: String, harga: Int, currency: String, terjual: Int, deskripsi: String): Int{
         for (i in kuantitasArr){
-            if (i.nama == nama){
+            if (i.nama == nama && i.harga == harga && i.currency == currency && i.terjual == terjual && i.deskripsi == deskripsi){
                 return i.quantity
             }
         }

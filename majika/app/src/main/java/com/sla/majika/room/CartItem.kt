@@ -4,10 +4,12 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "cart_item_table")
+@Entity(tableName = "cart_item_table", primaryKeys = ["nama", "harga", "currency", "terjual", "deskripsi"])
 data class CartItem(
-    @PrimaryKey @ColumnInfo(name = "nama") val nama : String,
+    @ColumnInfo(name = "nama") val nama : String,
     val harga : Int,
     var quantity : Int,
     var currency : String,
+    var terjual : Int,
+    var deskripsi : String,
 )

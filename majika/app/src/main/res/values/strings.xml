@@ -15,8 +15,10 @@
     <string name="default_deskripsi">Pedas</string>
 
     <string name="btn_capture">Capture</string>
-    <string name="btn_switch">Switch Camera</string>
+    <string name="btn_take_photo">Take Again</string>
     <string name="twibbon_warning_no_permissions">Camera permission is required to use this feature</string>
+    <string name="image_preview">Image Preview</string>
+    <string name="image_twibbon">Twibbon</string>
 
     <string-array name="nama_makanan">
         <item>Ayam Crisbar</item>

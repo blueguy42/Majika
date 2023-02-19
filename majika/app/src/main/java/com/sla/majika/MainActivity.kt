@@ -2,7 +2,9 @@ package com.sla.majika
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.fragment.app.Fragment
+import com.google.common.util.concurrent.ListenableFuture
 import com.sla.majika.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -17,7 +19,6 @@ class MainActivity : AppCompatActivity() {
         replaceFragment(Twibbon())
 
         binding.bottomNavigationView.setOnItemSelectedListener {
-
             when (it.itemId) {
                 R.id.camera -> replaceFragment(Twibbon())
                 R.id.location -> replaceFragment(CabangRestoran())

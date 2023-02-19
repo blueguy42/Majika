@@ -39,7 +39,7 @@ class CabangRestoranAdapter(private val cabangList: ArrayList<CabangRestoranMode
 //        holder.contact_person.text = currentItem.contact_person
         holder.phoneNumber.text = currentItem.phone_number
         holder.buttonMaps.setOnClickListener {
-            val gmmIntentUri = Uri.parse(String.format("geo:%s,%s", currentItem.latitude, currentItem.longitude))
+            val gmmIntentUri = Uri.parse("geo:${currentItem.latitude},${currentItem.longitude}>?q=${currentItem.latitude},${currentItem.longitude}")
             val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
             mapIntent.setPackage("com.google.android.apps.maps")
             startActivity(holder.itemView.context, mapIntent, null)

@@ -13,6 +13,7 @@ import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.budiyev.android.codescanner.*
+import com.google.zxing.BarcodeFormat
 import com.sla.majika.helper.PermissionCheck
 import com.sla.majika.retrofit.RetrofitHelper
 import com.sla.majika.retrofit.endpoint.EndpointPayment
@@ -51,11 +52,10 @@ class Pembayaran : AppCompatActivity() {
             codeScanner = CodeScanner(this, scannerView)
 
             // Parameters (default values)
-            codeScanner.camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
-            codeScanner.formats = CodeScanner.ALL_FORMATS // list of type BarcodeFormat,
-            // ex. listOf(BarcodeFormat.QR_CODE)
-            codeScanner.autoFocusMode = AutoFocusMode.SAFE // or CONTINUOUS
-            codeScanner.scanMode = ScanMode.SINGLE // or CONTINUOUS or PREVIEW
+            codeScanner.camera = CodeScanner.CAMERA_BACK
+            codeScanner.formats = listOf(BarcodeFormat.QR_CODE)
+            codeScanner.autoFocusMode = AutoFocusMode.SAFE
+            codeScanner.scanMode = ScanMode.SINGLE
 
             // Callbacks
             codeScanner.decodeCallback = DecodeCallback {
@@ -65,7 +65,6 @@ class Pembayaran : AppCompatActivity() {
                     GlobalScope.launch {
                         val paymentResponse = endpointPaymentAPI.postPayment(it.text)
                         if (paymentResponse != null) {
-//                            Log.d("PostData", paymentResponse.body().toString())
                             var result = paymentResponse!!.body()!!.status
                             Log.d("PostData", result)
 
@@ -89,12 +88,6 @@ class Pembayaran : AppCompatActivity() {
                                 Handler(Looper.getMainLooper()).postDelayed({
                                     cartItemViewModel.deleteAll()
                                     val intent = Intent(this@Pembayaran, MainActivity::class.java)
-                                    // BELUM BISA KE MENU TOLONG
-//                                    val fragment = Menu()
-//                                    val fragmentManager = supportFragmentManager
-//                                    val fragmentTransaction = fragmentManager.beginTransaction()
-//                                    fragmentTransaction.replace(R.id.frame_layout, fragment)
-//                                    fragmentTransaction.commit()
                                     startActivity(intent)
                                     finish()
                                 }, 5000)

@@ -95,7 +95,7 @@ class Menu : Fragment(), CartItemClickListener {
                     val sold = i.sold.toInt()
                     val desc = i.description
                     val currency = i.currency
-                    val quantity = getQuantityByNama(i.name)
+                    val quantity = getQuantityByNama(name,price,currency,sold,desc)
                     modelList.add(CartItem(name,price,quantity,currency,sold,desc))
                 }
                 tempModelList.addAll(modelList)
@@ -111,7 +111,7 @@ class Menu : Fragment(), CartItemClickListener {
                     val sold = i.sold.toInt()
                     val desc = i.description
                     val currency = i.currency
-                    val quantity = getQuantityByNama(i.name)
+                    val quantity = getQuantityByNama(name,price,currency,sold,desc)
                     modelList2.add(CartItem(name,price,quantity,currency,sold,desc))
                 }
                 tempModelList2.addAll(modelList2)
@@ -191,9 +191,9 @@ class Menu : Fragment(), CartItemClickListener {
         cartItemViewModel.update(cartItem)
     }
 
-    fun getQuantityByNama(nama: String): Int{
+    fun getQuantityByNama(nama: String, harga: Int, currency: String, terjual: Int, deskripsi: String): Int{
         for (i in kuantitasArr){
-            if (i.nama == nama){
+            if (i.nama == nama && i.harga == harga && i.currency == currency && i.terjual == terjual && i.deskripsi == deskripsi){
                 return i.quantity
             }
         }

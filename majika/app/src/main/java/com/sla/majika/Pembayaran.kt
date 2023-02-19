@@ -95,8 +95,9 @@ class Pembayaran : AppCompatActivity() {
                                 if (result == "SUCCESS") {
                                     Handler(Looper.getMainLooper()).postDelayed({
                                         cartItemViewModel.deleteAll()
-                                        val intent = Intent(this@Pembayaran, MainActivity::class.java)
-                                        startActivity(intent)
+                                        val intentReq = Intent(this@Pembayaran, MainActivity::class.java)
+                                        intentReq.putExtra("origin", "splash")
+                                        startActivity(intentReq)
                                         finish()
                                     }, 5000)
                                 } else {
@@ -104,13 +105,32 @@ class Pembayaran : AppCompatActivity() {
                                 }
 
                             }
-
                         } catch (e: Exception) {
                             e.printStackTrace()
-                            withContext(Dispatchers.Main) {Toast.makeText(this@Pembayaran, "Connection timed out", Toast.LENGTH_SHORT).show()}
-                            val intent = Intent(this@Pembayaran, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
+                            when (e) {
+                                is java.lang.NullPointerException -> {
+                                    val result1: TextView = findViewById<TextView>(R.id.scan_result)
+                                    val result2: TextView = findViewById<TextView>(R.id.scan_result2)
+                                    val result_icon: ImageView = findViewById<ImageView>(R.id.scan_result_icon)
+                                    result1.text = "Gagal"
+                                    result2.text = "Belum dibayar"
+                                    result_icon.setImageResource(R.drawable.baseline_x_circle_24)
+                                    codeScanner.startPreview()
+                                }
+                                is java.net.SocketTimeoutException -> {
+                                    withContext(Dispatchers.Main) {Toast.makeText(this@Pembayaran, "Connection timed out", Toast.LENGTH_SHORT).show()}
+                                    val intentReq = Intent(this@Pembayaran, MainActivity::class.java)
+                                    intentReq.putExtra("origin", "pembayaran")
+                                    startActivity(intentReq)
+                                    finish()
+                                }
+                                else -> {
+                                    val intentReq = Intent(this@Pembayaran, MainActivity::class.java)
+                                    intentReq.putExtra("origin", "pembayaran")
+                                    startActivity(intentReq)
+                                    finish()
+                                }
+                            }
                         }
                     }
                 }

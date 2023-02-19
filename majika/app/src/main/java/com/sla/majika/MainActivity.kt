@@ -1,7 +1,6 @@
 package com.sla.majika
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.sla.majika.databinding.ActivityMainBinding
@@ -20,36 +19,40 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val origin = intent.getStringExtra("origin")
-        if (origin == "splash") {
-            replaceFragment(Menu(), HeaderMenu())
-            binding.bottomNavigationView.selectedItemId = R.id.food
-        } else if (origin == "pembayaran") {
-            replaceFragment(Keranjang(), HeaderKeranjang())
-            binding.bottomNavigationView.selectedItemId = R.id.cart
-        } else {
-            when (menuId) {
-                0 -> {
-                    binding.bottomNavigationView.selectedItemId = R.id.camera
-                    replaceFragment(Twibbon(), HeaderTwibbon())
-                }
-                1 -> {
-                    binding.bottomNavigationView.selectedItemId = R.id.location
-                    replaceFragment(CabangRestoran(), HeaderCabang())
-                }
-                2 -> {
-                    binding.bottomNavigationView.selectedItemId = R.id.food
-                    replaceFragment(Menu(), HeaderMenu())
-                }
-                3 -> {
-                    binding.bottomNavigationView.selectedItemId = R.id.cart
-                    replaceFragment(Keranjang(), HeaderKeranjang())
-                }
-                else -> {
+        when (origin) {
+            "splash" -> {
+                replaceFragment(Menu(), HeaderMenu())
+                binding.bottomNavigationView.selectedItemId = R.id.food
+            }
+            "pembayaran" -> {
+                replaceFragment(Keranjang(), HeaderKeranjang())
+                binding.bottomNavigationView.selectedItemId = R.id.cart
+            }
+            else -> {
+                when (menuId) {
+                    0 -> {
+                        binding.bottomNavigationView.selectedItemId = R.id.camera
+                        replaceFragment(Twibbon(), HeaderTwibbon())
+                    }
+                    1 -> {
+                        binding.bottomNavigationView.selectedItemId = R.id.location
+                        replaceFragment(CabangRestoran(), HeaderCabang())
+                    }
+                    2 -> {
+                        binding.bottomNavigationView.selectedItemId = R.id.food
+                        replaceFragment(Menu(), HeaderMenu())
+                    }
+                    3 -> {
+                        binding.bottomNavigationView.selectedItemId = R.id.cart
+                        replaceFragment(Keranjang(), HeaderKeranjang())
+                    }
+                    else -> {
+                    }
                 }
             }
         }
 
-        intent.removeExtra("origin");
+        intent.removeExtra("origin")
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {

@@ -60,7 +60,10 @@
         <Button
             android:id="@+id/btnCapture"
             android:layout_width="wrap_content"
+            android:background="@drawable/button_shape"
             android:layout_height="wrap_content"
+            app:backgroundTint="#8A0E0E"
+            android:textColor="#FFFFFF"
             app:layout_constraintTop_toTopOf="@+id/textureViewTwibbon"/>
 
     </LinearLayout>

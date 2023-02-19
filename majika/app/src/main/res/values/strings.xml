@@ -66,5 +66,8 @@
     <string name="default_address">Jl. A</string>
     <string name="default_contact_person">Afan</string>
     <string name="default_phone_number">08123456789</string>
+    <string name="fragment_twibbon">Twibbon</string>
+    <string name="fragment_keranjang">Keranjang</string>
+    <string name="fragment_cabang_restoran">Cabang Restoran</string>
 
 </resources>

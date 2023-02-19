@@ -22,7 +22,8 @@
             app:boxCornerRadiusBottomStart="25dp"
             app:boxCornerRadiusTopEnd="25dp"
             app:boxCornerRadiusTopStart="25dp"
-            app:boxStrokeWidth="0dp">
+            app:boxStrokeWidth="0dp"
+            android:textColorHint="#696969" >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/text_input"

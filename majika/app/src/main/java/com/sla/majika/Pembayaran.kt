@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -68,11 +69,17 @@ class Pembayaran : AppCompatActivity() {
                             Log.d("PostData", result)
 
                             this@Pembayaran.runOnUiThread(Runnable {
-                                val textView: TextView = findViewById<TextView>(R.id.scan_result)
+                                val result1: TextView = findViewById<TextView>(R.id.scan_result)
+                                val result2: TextView = findViewById<TextView>(R.id.scan_result2)
+                                val result_icon: ImageView = findViewById<ImageView>(R.id.scan_result_icon)
                                 if (result == "SUCCESS") {
-                                    textView.text = "Payment Success"
+                                    result1.text = "Berhasil"
+                                    result2.text = "Sudah dibayar"
+                                    result_icon.setImageResource(R.drawable.baseline_check_circle_24)
                                 } else {
-                                    textView.text = "Payment Failed"
+                                    result1.text = "Gagal"
+                                    result2.text = "Belum dibayar"
+                                    result_icon.setImageResource(R.drawable.baseline_x_circle_24)
                                 }
                             })
 

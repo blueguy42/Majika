@@ -50,11 +50,11 @@ Aplikasi Majika merupakan aplikasi mobile untuk pembelian makanan berbasis Andro
 
 
 ## Pembagian Kerja
-| NIM      | NAME                   | TASKS                                                            |
-|----------|------------------------|------------------------------------------------------------------|
-| 13520023 | Ahmad Alfani Handoyo   |Twibbon, Set-up backend (Retrofit), Header, Thread Management     |
-| 13520066 | Putri Nurhaliza        |Splash Screen, Cabang Restoran, Pembayaran, Navbar                |
-| 13520094 | Saul Sayers            |Daftar Makanan dan Minuman, Keranjang, Set-up Room & SQLite       |
+| NIM      | NAMA                   | TASK                                                             |Total Jam                           |
+|----------|------------------------|------------------------------------------------------------------|------------------------------------|
+| 13520023 | Ahmad Alfani Handoyo   |Twibbon, Set-up backend (Retrofit), Header, Thread Management     |6 jam persiapan + 36 jam pengerjaan |
+| 13520066 | Putri Nurhaliza        |Splash Screen, Cabang Restoran, Pembayaran, Navbar                |4 jam persiapan + 30 jam pengerjaan |
+| 13520094 | Saul Sayers            |Daftar Makanan dan Minuman, Keranjang, Set-up Room & SQLite       |4 jam persiapan + 30 jam pengerjaan |
 
 
 
